@@ -1,0 +1,82 @@
+<%!
+    /**
+     * SubmissionDetailsHelperBridge
+     *
+     * This is used to help associate the actual records that the task is referring to
+     */
+    public static class SubmissionDetailsHelperBridge {
+        /**
+         *  @param HelperContext object
+         *  @param templateId string
+         *  @param csrv string
+         *  @return incidentsByToken Map<String, IncidentBridge>
+         */
+        public static Map<String, IncidentBridge> mapIncidentBridgeByToken(HelperContext context, String templateId, String csrv) {
+            BridgeList<IncidentBridge> incidents = IncidentBridge.findAllByCsrv(context, templateId, csrv);
+            Map<String, IncidentBridge> incidentsByToken = new java.util.HashMap<String, IncidentBridge>();
+            for (IncidentBridge incident : incidents) {
+                incidentsByToken.put(incident.get("Token"), incident);
+            }
+            return incidentsByToken;
+        }
+
+        /**
+         *  @param HelperContext object
+         *  @param templateId string
+         *  @param csrv string
+         *  @return changesByToken Map<String, ChangeBridge>
+         */
+        public static Map<String, ChangeBridge> mapChangeBridgeByToken(HelperContext context, String templateId, String csrv) {
+            BridgeList<ChangeBridge> changes = ChangeBridge.findAllByCsrv(context, templateId, csrv);
+            Map<String, ChangeBridge> changesByToken = new java.util.HashMap<String, ChangeBridge>();
+            for (ChangeBridge change : changes) {
+                changesByToken.put(change.get("Token"), change);
+            }
+            return changesByToken;
+        }
+
+        /**
+         * Build map with token as index pointing to an array list of audit records 
+         * because there might be multiple audits per token
+         *
+         *  @param HelperContext object
+         *  @param templateId string
+         *  @param csrv string
+         *  @return changeAuditsByToken Map<String, List<ChangeAudit>>
+         */
+        public static Map<String, List<ChangeAudit>> mapChangeAuditsByToken(HelperContext context, String templateId, String csrv) {
+            BridgeList<ChangeAudit> changeAudits = ChangeAudit.findAllByCsrv(context, templateId, csrv);
+            Map<String, List<ChangeAudit>> changeAuditsByToken = new java.util.HashMap<String, List<ChangeAudit>>();
+            for (ChangeAudit changeAudit : changeAudits) {
+                String token = changeAudit.get("Token");
+                if(!changeAuditsByToken.containsKey(token)) {
+                    changeAuditsByToken.put(token, new ArrayList<ChangeAudit>());
+                }
+                changeAuditsByToken.get(token).add(changeAudit);
+            }
+            return changeAuditsByToken;
+        }
+
+        /**
+         * Build map with token as index pointing to an array list of audit records 
+         * because there might be multiple audits per token
+         *
+         *  @param HelperContext object
+         *  @param templateId string
+         *  @param csrv string
+         *  @return incidentAuditsByToken Map<String, List<IncidentAudit>>
+         */
+        public static Map<String, List<IncidentAudit>> mapIncidentAuditsByToken(HelperContext context, String templateId, String csrv) {
+            BridgeList<IncidentAudit> incidentAudits = IncidentAudit.findAllByCsrv(context, templateId, csrv);
+            Map<String, List<IncidentAudit>> incidentAuditsByToken = new java.util.HashMap<String, List<IncidentAudit>>();
+            for (IncidentAudit incidentAudit : incidentAudits) {
+                String token = incidentAudit.get("Token");
+                if(!incidentAuditsByToken.containsKey(token)) {
+                    incidentAuditsByToken.put(token, new ArrayList<IncidentAudit>());
+                }
+                incidentAuditsByToken.get(token).add(incidentAudit);
+            }
+            return incidentAuditsByToken;
+        }
+    }
+%>

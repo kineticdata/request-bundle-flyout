@@ -1,0 +1,152 @@
+<%
+    // Retrieve the person object
+    Person person = null;
+    if (context != null) {
+        person = Person.findByUsername(context, context.getUserName());
+    }
+%>
+<header class="main-header border-bottom">
+    <div class="container">
+        <div class="row">
+            <a href="<%= bundle.getProperty("catalogUrl")%>">
+                <img alt="<%= bundle.getProperty("companyName") %>" class="logo" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" />
+            </a>
+            <div class="right-side">
+                <div class="row">
+                    <nav class="nav-portals">
+                    <ul>
+                        <% if (logoutEnabled && context != null) {%>
+                            <li>
+                                <a href="<%= bundle.getProperty("logoutUrl")%>">Logout</a>
+                            </li>
+                        <% } %>
+                        <li>
+                            <a href="<%= bundle.getProperty("submissionsUrl")%>">
+                                My Requests
+                            </a>
+                        </li>
+                        <% if (person != null) {%>
+                            <li>
+                                <% if(bundle.getProperty("profileUrl") != null ) { %>
+                                    <a href="<%= bundle.getProperty("profileUrl")%>">
+                                        Welcome&#44;&nbsp;<%= person.getFirstName()%>&nbsp;<%= person.getLastName()%>
+                                    </a>
+                                <% } else { %>
+                                    Welcome&#44;&nbsp;<%= person.getFirstName()%>&nbsp;<%= person.getLastName()%>
+                                <% } %>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+                </div>
+                <form id="catalog-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
+                    <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
+                    <p>
+                       <input id="search" class="input-large" type="search" name="q" value="" />
+                       <!-- span deals with button floating incorrectly next to input in ie 7 fail -->
+                       <span>
+                            <input type="submit" value="Search" />
+                       <span>
+                    </p>
+                </form>
+            </div>
+        </div>
+            <nav>
+                <ul class="nav" role="navigation">
+                    <li class="dropdown">
+                        <span class="nav-button-inner">
+                            <span>
+                                Browse by
+                            </span>
+                            <span class="nav-button-title nav-button-line2">
+                                Category
+                            </span>
+                            <i class="hidden nav-sprite"></i>
+                        </span>
+                        <div class="flyout-table-wrap">
+                            <table cellspacing="0" cellpadding="0" surround="0,30,30,30" class="flyout-table exposed-skin">
+                                <tbody>
+                                    <tr>
+                                        <td class="nav-pop-tl nav-pop-h">
+                                            <div class="nav-pop-lr-min"></div>
+                                        </td>
+                                        <td class="nav-pop-tc nav-pop-h"></td>
+                                        <td class="nav-pop-tr nav-pop-h">
+                                            <div class="nav-pop-lr-min"></div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="nav-pop-cl nav-pop-v"></td>
+                                        <td class="nav-pop-cc ap-content">
+                                            <div class="flyout" class="nav-super">
+                                                <div class="subcats-wrap subcats-wrap-super hidden">
+                                                    <ul class="subcats">
+                                                    </ul>
+                                                    <div class="subcats-border">
+                                                    </div>
+                                                    <div class="subcats-border subcats-border-fix">
+                                                    </div>
+                                                </div>
+                                                <div class="rootcats-wrap">
+                                                    <ul class="dropdown-menu unstyled" role="menu" aria-labelledby="services">
+                                                    <% for (Category category : catalog.getRootCategories(context)) { %>
+                                                        <% if(!categoryFilterHashSet.contains(category.getName())) {%>
+                                                            <% if (category.hasTemplates() || category.hasNonEmptySubcategories()) { %>
+                                                                <li class="category" data-id="<%= category.getId()%>" data-name="<%= category.getName()%>">
+                                                                    <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(category.getFullName(), "ISO-8859-1")%>" class="name">
+                                                                        <%= category.getName()%>
+                                                                    </a>
+                                                                    <div class="description">
+                                                                        <%= category.getDescription()%>
+                                                                    </div>
+                                                                    <%-- SUBCATEGORIES DATA --%>
+                                                                    <% if (category.hasNonEmptySubcategories()) {%>
+                                                                    <ul class="subcategories hidden">
+                                                                        <% for (Category subcategory : category.getSubcategories()) { %>
+                                                                            <% if (subcategory.hasTemplates()) { %>
+                                                                            <li class="subcategory" data-id="<%= subcategory.getId()%>" data-name="<%= subcategory.getName()%>">
+                                                                                <a href="<%= bundle.getProperty("categoryUrl") %>&category=<%= URLEncoder.encode(subcategory.getFullName(), "ISO-8859-1")%>" class="name">
+                                                                                    <%= subcategory.getName()%>
+                                                                                </a>
+                                                                                <div class="description">
+                                                                                    <%= subcategory.getDescription()%>
+                                                                                </div>
+                                                                            </li>
+                                                                            <% }%>
+                                                                        <% }%>
+                                                                        <div class="clearfix"></div>
+                                                                    </ul>
+                                                                    <% }%>
+                                                                </li>
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% }%>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="nav-pop-cr nav-pop-v"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="nav-pop-bl nav-pop-v"></td>
+                                        <td class="nav-pop-bc nav-pop-h"></td>
+                                        <td class="nav-pop-br nav-pop-v"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>          
+                    </li>
+                    <li class="root">
+                        <a class="popular-requests" href="<%= bundle.getProperty("catalogUrl")%>">
+                            Popular Requests
+                        </a> 
+                    </li>
+                    <li class="root">
+                        <a class="a-z" href="<%= bundle.getProperty("catalogListingUrl")%>">
+                            A-Z Listing
+                        </a> 
+                    </li>           
+                </ul>
+            </nav>
+    </div>
+</header>

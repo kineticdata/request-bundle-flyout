@@ -1,0 +1,33 @@
+<%!
+    public static class ChangeBridge extends BridgeBase {
+        private static final Class CLASS = ChangeBridge.class;
+        private static final String MODEL_NAME = "ChangeBridge";
+        public ChangeBridge() {}
+
+        public static BridgeList<ChangeBridge> findAllByCsrv(HelperContext context, String templateId, String csrv) {
+            String qualification = "by SRInstanceID";
+            Map<String, String> parameters = new java.util.HashMap<String, String>();
+            parameters.put("SRInstanceID", csrv);
+            // Build metadata
+            Map<String, String> metadata = new java.util.HashMap<String, String>();
+            /**
+             * This metadata sets a sort on priorty
+             * Sorting is required on at least one attribute other than description with over 255 characters or things will break
+             * The bridge syntax has to be delimited as a string otherwise it will be interpreted as java code
+             */
+            metadata.put("order", "<"+"%=attribute[\"Priority\"]%"+">:ASC");
+            return BridgeBase.search(context, templateId, MODEL_NAME, qualification, parameters, metadata, CLASS);
+        }
+        
+        /**
+         * ChangeBridge extends Bridge base so get is avaliable
+         */
+        public String getSummary() { return get("Summary"); }
+        public String getDescription() { return get("Description"); }
+        public String getStatus() { return get("Status"); }
+        public String getStatusReason() { return get("Status_Reason"); }
+        public String getLastModifiedBy() { return get("Last Modified By"); }
+        public String getPriority() { return get("Priority"); }
+        public String getToken() { return get("Token"); }
+    }
+%>

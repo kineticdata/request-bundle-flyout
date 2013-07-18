@@ -1,0 +1,5 @@
+@charset "utf-8";
+ul.keywords { margin: 0; padding: 0; }
+ul.keywords li.keyword ul.keyword-values { margin: 0; padding: 0; }
+ul.keywords li.keyword ul.keyword-values li.keyword-value { margin: 0; padding: 0 5px; float: left; border-left: 1px solid rgb(150, 150, 150); }
+ul.keywords li.keyword ul.keyword-values li.keyword-value:first-child { padding: 0 5px 0 0; border-left: none; }

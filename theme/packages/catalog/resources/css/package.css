@@ -1,0 +1,26 @@
+@charset "utf-8";
+/* Templates */
+ul.templates { margin-top: 10px; margin-bottom: 10px; }
+ul.templates li { padding: 10px 0 10px 0; }
+ul.templates li:first-child { border: none; }
+ul.templates li div.image { float: left; margin: 20px 20px 0 0; width: 120px; }
+ul.templates li div.content-wrap { float: left; width: 960px; margin: 0; }
+ul.templates li div.content-wrap nav { font-size: 14px; }
+ul.templates li .highlighted { padding: 0px 0px 0px 0px; }
+ul.templates li div.description {
+    float: left;
+    width: 500px;
+    margin-right: 20px;
+}
+ul.templates li div.description p {
+    overflow:hidden;
+    text-overflow:ellipsis;
+    height: 60px;
+}
+ul.templates li div.description a { text-decoration: none; font-weight: bold; }
+ul.templates li div.description a:hover { text-decoration: underline; }
+ul.templates li div.description-attributes {
+    float: left;
+    width: 300px;
+}
+ul.templates li div.description-wide { float: left; width: 640px; margin-right: 20px; }

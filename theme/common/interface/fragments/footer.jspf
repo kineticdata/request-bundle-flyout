@@ -1,0 +1,28 @@
+<footer class="border-top">
+    <div class="container">
+        <div class="links">
+            <div class="row">
+                <ul class="unstyled">
+                    <li>   
+                        Local # 1-651-556-1030
+                    </li>
+                    <li>
+                        <a href="mailto:sales@kineticdata.com">
+                            sales@kineticdata.com
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<%= bundle.getProperty("aboutUrl")%>">
+                            About
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<%= bundle.getProperty("feedbackUrl")%>">
+                            Site Feedback
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>

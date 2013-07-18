@@ -1,0 +1,20 @@
+<%!
+public static class Attachment {
+    private String requestId;
+    private String name;
+    private String fieldId;
+    private String formName;
+
+    public Attachment(String formName, String requestId, String fieldId, String name) {
+        this.formName = formName;
+        this.requestId = requestId;
+        this.fieldId = fieldId;
+        this.name = name;
+    }
+
+    public String getFormName() {return formName;}
+    public String getRequestId() {return requestId;}
+    public String getName() {return name;}
+    public String getFieldId() {return fieldId;}
+}
+%>

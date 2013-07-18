@@ -1,0 +1,9 @@
+@charset "utf-8";
+/* Templates, this was used when the flyout root cats were displayed on page load.
+ul.templates li div.content-wrap { width: 660px; }
+ul.templates li div.description { width: 340px; }
+ul.templates li div.description-wide { width: 440px; }
+ul.templates li div.image { margin: 40px 20px 0 0; width: 80px; }
+ul.templates li div.description p { height: 80px; }
+ul.templates li div.description-attributes { width: 200px; }
+*/

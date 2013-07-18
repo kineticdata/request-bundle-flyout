@@ -1,0 +1,22 @@
+<%--
+    Submission config
+    NOTE: This file is required.
+--%>
+<%
+    java.util.Map<String,String> submissionGroups = new java.util.LinkedHashMap();
+    if (context != null) {
+        submissionGroups.put("Draft Requests", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"In Progress\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Open Requests", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=$NULL$ AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Closed Requests", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=$NULL$ AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Pending Approvals",   "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Sent\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
+        submissionGroups.put("Completed Approvals", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'ApplicationName'=\"Kinetic Request\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
+    }
+
+    // Count is needed to control UI visibility for submissions in submissions.js
+    if (context != null) {
+        for (String groupName : submissionGroups.keySet()) {
+            Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName));
+            bundle.setProperty(groupName + " Count", Integer.toString(count));
+        }
+    }
+%>

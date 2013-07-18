@@ -1,0 +1,43 @@
+<%!
+    public static class Change {
+        public static final String FORM_NAME = "CHG:Infrastructure Change";
+        public static final String FIELD_TOKEN = "301572000";
+        public static final String FIELD_CHANGE_ID = "1000000182";  
+        // public static final String FIELD_ASSIGNED_GROUP = "1000000217";
+        public static final String FIELD_ASSIGNED_GROUP = "1000003227";
+        // public static final String FIELD_ASSIGNEE = "1000000218";
+        public static final String FIELD_ASSIGNEE = "1000003231";
+        public static final String FIELD_STATUS = "7";
+        public static final String FIELD_SR_INSTANCE_ID = "301368700";
+
+        public static final String[] FIELD_IDS = new String[] {
+            FIELD_TOKEN, FIELD_CHANGE_ID, FIELD_ASSIGNED_GROUP, FIELD_ASSIGNEE, FIELD_STATUS, FIELD_SR_INSTANCE_ID};
+
+        public static Change[] findAllByCsrv(HelperContext context, String csrv) {
+			Change[] results = new Change[0];
+            String qualification =
+                "'"+FIELD_SR_INSTANCE_ID+"' = \""+csrv+"\"";
+
+            SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS);
+            if (entries != null && entries.length > 0) {
+                results = new Change[entries.length];
+                for(int i=0;i<results.length;i++) {
+                    results[i] = new Change(entries[i]);
+                }
+            }
+
+            return results;
+        }
+
+        private SimpleEntry entry;
+        public Change(SimpleEntry entry) {
+            this.entry = entry;
+        }
+
+        public String getId() {return entry.getEntryFieldValue(FIELD_CHANGE_ID);}
+        public String getAssignedGroup() {return entry.getEntryFieldValue(FIELD_ASSIGNED_GROUP);}
+        public String getAssignee() {return entry.getEntryFieldValue(FIELD_ASSIGNEE);}
+        public String getStatus() {return entry.getEntryFieldValue(FIELD_STATUS);}
+        public String getToken() {return entry.getEntryFieldValue(FIELD_TOKEN);}		
+    }
+%>  

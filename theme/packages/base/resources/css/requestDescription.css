@@ -1,0 +1,20 @@
+@charset "utf-8";
+header .create-request { font-size: 14px; }
+.templateButtonLayer {
+    display: none !important;
+}
+
+div[label="Left Section"] {
+    float: left;
+    width: 700px;
+    padding: 0 20px 0 0;
+    margin: 0 20px 0 0;
+    border-right-style: solid; 
+    border-right-width: 1px; 
+    border-right-color: #e3e3e3; 
+}
+
+div[label="Right Section"] {
+    float: left;
+    width: 200px;
+}

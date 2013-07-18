@@ -1,0 +1,36 @@
+@charset "utf-8";
+nav ul.nav {
+    margin-top: 10px;
+}
+form#catalog-search input[type="text"] {
+    padding-top: 10px;
+    height: 18px;
+    width: 400px;
+    float: left;
+}
+hr.soften {
+  border: 0;
+  border-top: 3px solid #d8d8d8;
+}
+nav ul.nav li.root a {
+    padding: 10px 50px 11px 50px;
+}
+
+input.input-block-level {
+    width: 97%;
+    min-height: 0;
+    height: 20px;
+    padding-top: 10px;
+}
+
+#lookupForm label {
+    padding: 3px;
+}
+
+#close.templateButton {
+    margin-top: 30px;
+}
+
+select {
+    padding-top: 2px;
+}
