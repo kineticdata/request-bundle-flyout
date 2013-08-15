@@ -38,22 +38,6 @@
         }
 
         /**
-         *  @param HelperContext object
-         *  @param csrv string
-         *  @return approvalsByToken Map<String, Approval>
-         */
-        public static Map<String, Approval> mapApprovalsByToken(HelperContext context, String csrv) {
-            // Get all approvals by csrv
-            Approval[] approvals = Approval.findByOriginatingId(context, csrv);
-            // Build map by token
-            Map<String, Approval> approvalsByToken = new java.util.HashMap<String, Approval>();
-            for (Approval approval : approvals) {
-                approvalsByToken.put(approval.getToken(), approval);
-            }
-            return approvalsByToken;
-        }
-
-        /**
          *  @param Attachment
          *  @return string
          */

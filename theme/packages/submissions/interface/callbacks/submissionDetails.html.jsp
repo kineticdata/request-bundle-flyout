@@ -6,7 +6,6 @@
     Submission submission = null;
     Map<String, Incident> incidentsMapByToken = new java.util.HashMap<String, Incident>();
     Map<String, Change> changesMapByToken = new java.util.HashMap<String, Change>();
-    Map<String, Approval> approvalsMapByToken = new java.util.HashMap<String, Approval>();
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
@@ -16,7 +15,6 @@
         // Find incidents, changes and approvals and map them by token
         incidentsMapByToken = SubmissionDetailsHelper.mapIncidentsByToken(context, csrv);
         changesMapByToken = SubmissionDetailsHelper.mapChangesByToken(context, csrv);
-        approvalsMapByToken = SubmissionDetailsHelper.mapApprovalsByToken(context, csrv);
     }
 %>
 <% if(submission != null) {%>
@@ -65,9 +63,6 @@
                 // Used for workinfos and displaying status
                 Incident incident = incidentsMapByToken.get(task.getToken()); 
                 Change change = changesMapByToken.get(task.getToken());
-                // Define and get approvals if they acutally exist for given task
-                // Used for displaying approval validation status and not the task status
-                Approval approval = approvalsMapByToken.get(task.getToken());
                 %>
                     <div class="task <%= zebraCycle.cycle()%>">
                         <div class="wrap">
@@ -81,8 +76,6 @@
                                     <span><%= incident.getStatus()%></span>
                                 <% } else if(change != null && !change.getStatus().equals("")) {%>
                                     <span><%= change.getStatus()%></span>
-                                <% } else if(approval != null && !approval.getValiationStatus().equals("")) {%>
-                                    <%= approval.getValiationStatus()%>
                                 <%} else{%>
                                     <%= task.getStatus()%>
                                 <%}%>
