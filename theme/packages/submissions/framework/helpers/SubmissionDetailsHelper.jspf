@@ -10,9 +10,9 @@
          *  @param csrv string
          *  @return incidentsByToken Map<String, Incident>
          */
-        public static Map<String, Incident> mapIncidentsByToken(HelperContext context, String csrv) {
-            // Get all incidents by csrv
-            Incident[] incidents = Incident.findAllByCsrv(context, csrv);
+        public static Map<String, Incident> mapIncidentsByToken(HelperContext context, String templateId, String submissionId) {
+            // Get all incidents by submissionId
+            BridgeList<Incident> incidents = Incident.findBySubmissionId(context, templateId, submissionId);
             // Build map by token
             Map<String, Incident> incidentsByToken = new java.util.HashMap<String, Incident>();
             for (Incident incident : incidents) {
@@ -26,23 +26,15 @@
          *  @param csrv string
          *  @return changesByToken Map<String, Change>
          */
-        public static Map<String, Change> mapChangesByToken(HelperContext context, String csrv) {
-            // Get all changes by csrv
-            Change[] changes = Change.findAllByCsrv(context, csrv);
+        public static Map<String, Change> mapChangesByToken(HelperContext context, String templateId, String submissionId) {
+            // Get all changes by submissionId
+            BridgeList<Change> changes = Change.findBySubmissionId(context, templateId, submissionId);
             // Build map by token
             Map<String, Change> changesByToken = new java.util.HashMap<String, Change>();
             for (Change change : changes) {
                 changesByToken.put(change.getToken(), change);
             }
             return changesByToken;
-        }
-
-        /**
-         *  @param Attachment
-         *  @return string
-         */
-        public static String buildAttachmentUrl(Attachment attachment) {
-            return "DownloadAttachment/"+attachment.getFormName()+"/"+attachment.getFieldId()+"/"+attachment.getRequestId();
         }
     }
 %>

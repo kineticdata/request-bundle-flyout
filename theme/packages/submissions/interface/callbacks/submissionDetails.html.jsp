@@ -2,19 +2,20 @@
 <%@include file="../../framework/includes/packageInitialization.jspf"%>
 <%
     // Define vairables we are working with
-    String csrv = null;
+    String submissionId = null;
     Submission submission = null;
+    String templateId = "KSe3a8e782f9d7b5b85a0ac626042bda13e6";
     Map<String, Incident> incidentsMapByToken = new java.util.HashMap<String, Incident>();
     Map<String, Change> changesMapByToken = new java.util.HashMap<String, Change>();
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
-        csrv = request.getParameter("csrv");
-        submission = Submission.findByInstanceId(context, csrv);
+        submissionId = request.getParameter("csrv");
+        submission = Submission.findByInstanceId(context, submissionId);
         // Find incidents, changes and approvals and map them by token
-        incidentsMapByToken = SubmissionDetailsHelper.mapIncidentsByToken(context, csrv);
-        changesMapByToken = SubmissionDetailsHelper.mapChangesByToken(context, csrv);
+        incidentsMapByToken = SubmissionDetailsHelper.mapIncidentsByToken(context, templateId, submissionId);
+        changesMapByToken = SubmissionDetailsHelper.mapChangesByToken(context, templateId, submissionId);
     }
 %>
 <% if(submission != null) {%>
@@ -102,11 +103,11 @@
                                 </div>
                             </div>
                         <% }%>
+                        <!-- Start Incident Worklogs -->
                         <% if (incident != null) {%>
-                            <!-- Start Incident Worklogs -->
                             <%
-                            IncidentWorkLog[] incidentWorkLogs = IncidentWorkLog.findByIncident(context, incident.getId());
-                            if (incidentWorkLogs.length > 0) {
+                            BridgeList<IncidentWorkInfo> incidentWorkInfos = IncidentWorkInfo.findByIncidentId(context, templateId, incident.getId());
+                            if (incidentWorkInfos.size() > 0) {
                             %>
                                 <div class="worklogs">
                                     <div class="worklogs-expand" class="link">
@@ -114,34 +115,35 @@
                                             Activity Log(s)
                                         </a>
                                     </div>
-                                    <% for (IncidentWorkLog incidentWorkLog : incidentWorkLogs) {%>
+                                    <% for (IncidentWorkInfo incidentWorkInfo : incidentWorkInfos) {%>
                                         <div class="worklog hidden <%= zebraCycle.cycle()%>">
-                                            <% if (!incidentWorkLog.getSubmitDate().equals("")) {%>
+                                            <% if (!incidentWorkInfo.getSubmitDate().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Date &amp; Time</div>
-                                                    <div class="value"><%= incidentWorkLog.getSubmitDate()%></div>
+                                                    <div class="value"><%= incidentWorkInfo.getSubmitDate()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!incidentWorkLog.getSubmitter().equals("")) {%>
+                                            <% if (!incidentWorkInfo.getSubmitter().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Submitter</div>
-                                                    <div class="value"><%= incidentWorkLog.getSubmitter()%></div>
+                                                    <div class="value"><%= incidentWorkInfo.getSubmitter()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!incidentWorkLog.getSummary().equals("")) {%>
+                                            <% if (!incidentWorkInfo.getSummary().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Summary</div>
-                                                    <div class="value"><%= incidentWorkLog.getSummary()%></div>
+                                                    <div class="value"><%= incidentWorkInfo.getSummary()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!incidentWorkLog.getNotes().equals("")) {%>
+                                            <% if (!incidentWorkInfo.getNotes().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Notes</div>
-                                                    <div class="value"><%= incidentWorkLog.getNotes()%></div>
+                                                    <div class="value"><%= incidentWorkInfo.getNotes()%></div>
                                                 </div>
                                             <% }%>
+                                            <%--
                                             <% 
-                                            Attachment[] attachments = incidentWorkLog.getAttachments();
+                                            Attachment[] attachments = incidentWorkInfo.getAttachments();
                                             if (attachments.length > 0) {
                                             %>
                                                 <div class="label">Attachment(s)</div>
@@ -153,17 +155,18 @@
                                                     <br />
                                                 <% } %>
                                             <%}%>
+                                            --%>
                                         </div>
                                     <% } %>
                                 </div>
                             <% } %>
                         <% } %>
-                        <!-- End Incident Worklogs -->
+                        <!-- End Incident Work Infos -->
+                        <!-- Start Change Work Infos -->
                         <% if (change != null) {%>
-                            <!-- Start Change Worklogs -->
                             <%
-                            ChangeWorkLog[] changeWorkLogs = ChangeWorkLog.findByChangeId(context, change.getId());
-                            if (changeWorkLogs.length > 0) {
+                            BridgeList<ChangeWorkInfo> changeWorkInfos = ChangeWorkInfo.findByChangeId(context, templateId, change.getId());
+                            if (changeWorkInfos.size() > 0) {
                             %>
                                 <div class="worklogs">
                                     <div class="worklogs-expand" class="link">
@@ -171,34 +174,35 @@
                                             Activity Log(s)
                                         </a>
                                     </div>
-                                    <% for (ChangeWorkLog changeWorkLog : changeWorkLogs) {%>
+                                    <% for (ChangeWorkInfo changeWorkInfo : changeWorkInfos) {%>
                                         <div class="worklog hidden <%= zebraCycle.cycle()%>">
-                                            <% if (!changeWorkLog.getSubmitDate().equals("")) {%>
+                                            <% if (!changeWorkInfo.getSubmitDate().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Date &amp; Time</div>
-                                                    <div class="value"><%= changeWorkLog.getSubmitDate()%></div>
+                                                    <div class="value"><%= changeWorkInfo.getSubmitDate()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!changeWorkLog.getSubmitter().equals("")) {%>
+                                            <% if (!changeWorkInfo.getSubmitter().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Submitter</div>
-                                                    <div class="value"><%= changeWorkLog.getSubmitter()%></div>
+                                                    <div class="value"><%= changeWorkInfo.getSubmitter()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!changeWorkLog.getSummary().equals("")) {%>
+                                            <% if (!changeWorkInfo.getSummary().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Summary</div>
-                                                    <div class="value"><%= changeWorkLog.getSummary()%></div>
+                                                    <div class="value"><%= changeWorkInfo.getSummary()%></div>
                                                 </div>
                                             <% }%>
-                                            <% if (!changeWorkLog.getNotes().equals("")) {%>
+                                            <% if (!changeWorkInfo.getNotes().equals("")) {%>
                                                 <div class="wrap">
                                                     <div class="label">Notes</div>
-                                                    <div class="value"><%= changeWorkLog.getNotes()%></div>
+                                                    <div class="value"><%= changeWorkInfo.getNotes()%></div>
                                                 </div>
                                             <% }%>
+                                            <%--
                                             <% 
-                                            Attachment[] attachments = changeWorkLog.getAttachments();
+                                            Attachment[] attachments = changeWorkInfo.getAttachments();
                                             if (attachments.length > 0) {
                                             %>
                                                 <div class="label">Attachment(s)</div>
@@ -210,12 +214,13 @@
                                                     <br />
                                                 <% } %>
                                             <%}%>
+                                            --%>
                                         </div>
                                     <% } %>
                                 </div>
                             <% } %>
                         <% }%>
-                        <!-- End Change Worklogs -->
+                        <!-- End Change Work Infos -->
                     </div>
                 <% }%>
             <% }%>
