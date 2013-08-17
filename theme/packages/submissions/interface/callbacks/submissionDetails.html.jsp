@@ -5,17 +5,11 @@
     String submissionId = null;
     Submission submission = null;
     String templateId = "KSe3a8e782f9d7b5b85a0ac626042bda13e6";
-    Map<String, Incident> incidentsMapByToken = new java.util.HashMap<String, Incident>();
-    Map<String, Change> changesMapByToken = new java.util.HashMap<String, Change>();
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
-        submissionId = request.getParameter("csrv");
-        submission = Submission.findByInstanceId(context, submissionId);
-        // Find incidents, changes and approvals and map them by token
-        incidentsMapByToken = SubmissionDetailsHelper.mapIncidentsByToken(context, templateId, submissionId);
-        changesMapByToken = SubmissionDetailsHelper.mapChangesByToken(context, templateId, submissionId);
+        submission = Submission.findByInstanceId(context, request.getParameter("csrv"));
     }
 %>
 <% if(submission != null) {%>
@@ -58,13 +52,7 @@
         <!-- Start Tasks -->
         <div class="tasks">
             <% for (String treeName : submission.getTaskTreeExecutions(context).keySet()) {%>
-                <% for (Task task : submission.getTaskTreeExecutions(context).get(treeName)) {%>
-                <%
-                // Define and Get incident or change record if they actually exist for current task
-                // Used for workinfos and displaying status
-                Incident incident = incidentsMapByToken.get(task.getToken()); 
-                Change change = changesMapByToken.get(task.getToken());
-                %>
+                <% for (Task task : submission.getTaskTreeExecutions(context).get(treeName)) { %>
                     <div class="task <%= zebraCycle.cycle()%>">
                         <div class="wrap">
                             <div class="label">Task</div>
@@ -72,15 +60,7 @@
                         </div>
                         <div class="wrap">
                         <div class="label">Status</div>
-                            <div class="value">
-                                <% if (incident != null && !incident.getStatus().equals("")) {%>
-                                    <span><%= incident.getStatus()%></span>
-                                <% } else if(change != null && !change.getStatus().equals("")) {%>
-                                    <span><%= change.getStatus()%></span>
-                                <%} else{%>
-                                    <%= task.getStatus()%>
-                                <%}%>
-                            </div>
+                            <div class="value"><%= task.getStatus()%></div>
                         </div>
                         <div class="wrap">
                             <div class="label">Initiated</div>
@@ -104,9 +84,11 @@
                             </div>
                         <% }%>
                         <!-- Start Incident Worklogs -->
-                        <% if (incident != null) {%>
+                        <% if (task.getDefName().equals("bmc_itsm7_incident_create_v2")) {%>
                             <%
-                            BridgeList<IncidentWorkInfo> incidentWorkInfos = IncidentWorkInfo.findByIncidentId(context, templateId, incident.getId());
+                            String incidentId = task.getResult("Incident Number");
+                            Incident incident = Incident.findById(context, templateId, incidentId);
+                            BridgeList<IncidentWorkInfo> incidentWorkInfos = IncidentWorkInfo.findByIncidentId(context, templateId, incidentId);
                             if (incidentWorkInfos.size() > 0) {
                             %>
                                 <div class="worklogs">
@@ -163,9 +145,11 @@
                         <% } %>
                         <!-- End Incident Work Infos -->
                         <!-- Start Change Work Infos -->
-                        <% if (change != null) {%>
+                        <% if (task.getDefName().equals("bmc_itsm7_change_create_v2")) {%>
                             <%
-                            BridgeList<ChangeWorkInfo> changeWorkInfos = ChangeWorkInfo.findByChangeId(context, templateId, change.getId());
+                            String changeId = task.getResult("Change Number");
+                            Change change = Change.findById(context, templateId, changeId);
+                            BridgeList<ChangeWorkInfo> changeWorkInfos = ChangeWorkInfo.findByChangeId(context, templateId, changeId);
                             if (changeWorkInfos.size() > 0) {
                             %>
                                 <div class="worklogs">

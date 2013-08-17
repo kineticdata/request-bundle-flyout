@@ -14,14 +14,13 @@
              * Sorting is required on at least one attribute other than description with over 255 characters or things will break
              * The bridge syntax has to be delimited as a string otherwise it will be interpreted as java code
              */
-            metadata.put("order", "<"+"%=attribute[\"Id\"]%"+">:ASC");
+            metadata.put("order", "<"+"%=attribute[\"SubmitDate\"]%"+">:ASC");
             return BridgeBase.search(context, templateId, MODEL_NAME, qualification, parameters, metadata, CLASS);
         }
         
         /**
          * ChangeWorkInfo extends Bridge base so get is avaliable
          */
-        public String getId() { return get("Id"); }
         public String getSubmitter() { return get("Submitter"); }
         public String getSubmitDate() { return get("SubmitDate"); }
         public String getSummary() { return get("Summary"); }

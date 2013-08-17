@@ -30,7 +30,6 @@
       <%@include file="../helpers/LanguageHelper.jspf
       <%@include file="../helpers/PackageHelper.jspf
 --%>
-<%@include file="../helpers/SubmissionDetailsHelper.jspf" %>
 <%@include file="../../../../common/framework/helpers/PathHelper.jspf" %>
 
 <%--

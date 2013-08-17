@@ -64,6 +64,18 @@
             return this.record;
         }
 
+        /*
+         * Define a helper method that checks to see if the returned record is
+         * null.  It calls the getRecord method which will in turn call the get()
+         * on the futureRecord membor if necessary.  This is done because the
+         * BridgeBase calls return a record will never return null so this
+         * helpers provides better way of checking for null that manually calling
+         * getRecord in the JSPs.
+         */
+        public boolean isNull() {
+            return getRecord() == null;
+        }
+
         
         /*** RETRIEVE ***
          * 
