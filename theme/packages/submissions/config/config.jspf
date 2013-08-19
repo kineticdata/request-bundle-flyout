@@ -19,4 +19,7 @@
             bundle.setProperty(groupName + " Count", Integer.toString(count));
         }
     }
+
+    bundle.setProperty("incidentHandler", "bmc_itsm7_incident_create_v2");
+    bundle.setProperty("changeHandler", "bmc_itsm7_change_create_v2");
 %>

@@ -17,13 +17,29 @@
             metadata.put("order", "<"+"%=attribute[\"SubmitDate\"]%"+">:ASC");
             return BridgeBase.search(context, templateId, MODEL_NAME, qualification, parameters, metadata, CLASS);
         }
-        
+
+        public String getAttachment1Url(Bundle bundle) {
+            return "DownloadAttachment/" + get("MetaFormName") + "/" + get("MetaAttachment1FieldId") + "/" + getId();
+        }
+
+        public String getAttachment2Url(Bundle bundle) {
+            return "DownloadAttachment/" + get("MetaFormName") + "/" + get("MetaAttachment2FieldId") + "/" + getId();
+        }
+
+        public String getAttachment3Url(Bundle bundle) {
+            return "DownloadAttachment/" + get("MetaFormName") + "/" + get("MetaAttachment3FieldId") + "/" + getId();
+        }
+
         /**
          * ChangeWorkInfo extends Bridge base so get is avaliable
          */
+        public String getId() { return get("Id"); }
         public String getSubmitter() { return get("Submitter"); }
         public String getSubmitDate() { return get("SubmitDate"); }
         public String getSummary() { return get("Summary"); }
         public String getNotes() { return get("Notes"); }
+        public String getAttachment1() { return get("Attachment1"); }
+        public String getAttachment2() { return get("Attachment2"); }
+        public String getAttachment3() { return get("Attachment3"); }
     }
 %>  

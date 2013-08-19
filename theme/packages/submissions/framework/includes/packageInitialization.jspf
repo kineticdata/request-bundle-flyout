@@ -46,8 +46,6 @@
 <%@include file="../models/IncidentWorkInfo.jspf" %>
 <%@include file="../models/Change.jspf" %>
 <%@include file="../models/ChangeWorkInfo.jspf" %>
-<%@include file="../models/Attachment.jspf" %>
-
 
 <%--
     Instantiate any appropriate helper objects.  By convention, the

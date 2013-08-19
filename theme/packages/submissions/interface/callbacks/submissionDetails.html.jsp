@@ -4,7 +4,7 @@
     // Define vairables we are working with
     String submissionId = null;
     Submission submission = null;
-    String templateId = "KSe3a8e782f9d7b5b85a0ac626042bda13e6";
+    String templateId = "KSGAA5V0FUPJHAMROO5DEB9S66EETP";
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
@@ -84,13 +84,17 @@
                             </div>
                         <% }%>
                         <!-- Start Incident Worklogs -->
-                        <% if (task.getDefName().equals("bmc_itsm7_incident_create_v2")) {%>
+                        <% if (task.getDefName().equals(bundle.getProperty("incidentHandler"))) {%>
                             <%
                             String incidentId = task.getResult("Incident Number");
                             Incident incident = Incident.findById(context, templateId, incidentId);
                             BridgeList<IncidentWorkInfo> incidentWorkInfos = IncidentWorkInfo.findByIncidentId(context, templateId, incidentId);
-                            if (incidentWorkInfos.size() > 0) {
                             %>
+                            <div class="wrap">
+                                <div class="label">Incident Number</div>
+                                <div class="value"><%= incident.getId()%></div>
+                            </div>
+                            <% if (incidentWorkInfos.size() > 0) { %>
                                 <div class="worklogs">
                                     <div class="worklogs-expand" class="link">
                                         <a href="javascript: void(0)">
@@ -123,21 +127,26 @@
                                                     <div class="value"><%= incidentWorkInfo.getNotes()%></div>
                                                 </div>
                                             <% }%>
-                                            <%--
-                                            <% 
-                                            Attachment[] attachments = incidentWorkInfo.getAttachments();
-                                            if (attachments.length > 0) {
-                                            %>
-                                                <div class="label">Attachment(s)</div>
-                                                <br />
-                                                <% for (Attachment attachment : attachments) { %>
-                                                    <a href="<%=bundle.applicationPath() + SubmissionDetailsHelper.buildAttachmentUrl(attachment)%>">
-                                                        <%=attachment.getName()%>
-                                                    </a>
-                                                    <br />
-                                                <% } %>
-                                            <%}%>
-                                            --%>
+                                            <div class="label">Attachment(s)</div>
+                                            <br />
+                                            <% if (!incidentWorkInfo.getAttachment1().equals("")) {%>
+                                            <a href="<%=bundle.applicationPath() + incidentWorkInfo.getAttachment1Url(bundle)%>">
+                                                <%=incidentWorkInfo.getAttachment1()%>
+                                            </a>
+                                            <br />
+                                            <% }%>
+                                            <% if (!incidentWorkInfo.getAttachment2().equals("")) {%>
+                                            <a href="<%=bundle.applicationPath() + incidentWorkInfo.getAttachment2Url(bundle)%>">
+                                                <%=incidentWorkInfo.getAttachment2()%>
+                                            </a>
+                                            <br />
+                                            <% }%>                                            
+                                            <% if (!incidentWorkInfo.getAttachment3().equals("")) {%>
+                                            <a href="<%=bundle.applicationPath() + incidentWorkInfo.getAttachment3Url(bundle)%>">
+                                                <%=incidentWorkInfo.getAttachment3()%>
+                                            </a>
+                                            <br />
+                                            <% }%>                                            
                                         </div>
                                     <% } %>
                                 </div>
@@ -145,13 +154,17 @@
                         <% } %>
                         <!-- End Incident Work Infos -->
                         <!-- Start Change Work Infos -->
-                        <% if (task.getDefName().equals("bmc_itsm7_change_create_v2")) {%>
+                        <% if (task.getDefName().equals(bundle.getProperty("changeHandler"))) {%>
                             <%
                             String changeId = task.getResult("Change Number");
                             Change change = Change.findById(context, templateId, changeId);
                             BridgeList<ChangeWorkInfo> changeWorkInfos = ChangeWorkInfo.findByChangeId(context, templateId, changeId);
-                            if (changeWorkInfos.size() > 0) {
-                            %>
+			    %>
+		            <div class="wrap">
+				<div class="label">Change Number</div>
+				<div class="value"><%= change.getId()%></div>
+			    </div>
+                            <% if (changeWorkInfos.size() > 0) { %>
                                 <div class="worklogs">
                                     <div class="worklogs-expand" class="link">
                                         <a href="javascript: void(0)">
