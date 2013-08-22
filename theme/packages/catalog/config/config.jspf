@@ -10,5 +10,5 @@
     attributeDescriptionNames.add("Who Can Request");  
 
     // Used in catalog.jsp for top Requests. This is used to filter top Requests by their template type
-    String[] templateTypeFilterTopSubmissions = new String[] {"Approval", "Utility", "Request Description", "Template", "Resolution Inquiry", "Portal"}; 
+    String[] templateTypeFilterTopSubmissions = new String[] {"Approval", "Utility", "Request Description", "Resolution Inquiry", "Portal"}; 
 %>

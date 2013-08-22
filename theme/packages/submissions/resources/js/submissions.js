@@ -7,7 +7,7 @@ $(document).ready(function() {
 
     var urlParameters = getUrlParameters();
     if(!urlParameters.status) {
-        urlParameters.status = "Open Requests";
+        urlParameters.status = "Open Request";
     }
     if(BUNDLE['config'][urlParameters.status+' Count'] > 0) {
         // Initialize datatables
@@ -305,41 +305,41 @@ function completedApprovalsCompleteCallback(table, oSettings, json) {
  */
 tableParams = { 
     // Define table specific properties
-    'Open Requests': {
+    'Open Request': {
         container: '#submissions table',
-        qualification: 'Open Requests',
+        qualification: 'Open Request',
         formDefinition: formDefinitionDefault,
         columnDefinitions: columnDefinitionsDefault,
         rowCallback: defaultRowCallback,
         completeCallback: requestsOpenClosedCompleteCallback
     },
-    'Closed Requests': {
+    'Closed Request': {
         container: '#submissions table',
-        qualification: 'Closed Requests',
+        qualification: 'Closed Request',
         formDefinition: formDefinitionDefault,
         columnDefinitions: columnDefinitionsDefault,
         rowCallback: defaultRowCallback,
         completeCallback: requestsOpenClosedCompleteCallback
     },
-    'Draft Requests': {
+    'Draft Request': {
         container: '#submissions table',
-        qualification: 'Draft Requests',
+        qualification: 'Draft Request',
         formDefinition: formDefinitionDrafts,
         columnDefinitions: columnDefinitionsDrafts,
         rowCallback: defaultRowCallback,
         completeCallback: requestsParkedCompleteCallback
     },
-    'Pending Approvals': {
+    'Pending Approval': {
         container: '#submissions table',
-        qualification: 'Pending Approvals',
+        qualification: 'Pending Approval',
         formDefinition: formDefinitionPendingApprovals,
         columnDefinitions: columnDefinitionsPendingApprovals,
         rowCallback: defaultRowCallback,
         completeCallback: requestsParkedCompleteCallback
     },
-    'Completed Approvals': {
+    'Completed Approval': {
         container: '#submissions table',
-        qualification: 'Completed Approvals',
+        qualification: 'Completed Approval',
         formDefinition: formDefinitionPendingApprovals,
         columnDefinitions: columnDefinitionsDefault,
         rowCallback: defaultRowCallback,
@@ -377,7 +377,7 @@ function intializeDataTable(tableParams, groupName, arsUrl) {
         'sAjaxSource': arsUrl.getUrl(),
         'sPaginationType': 'full_numbers',
         'aaSorting': [[1, 'desc']],
-        //'sDom': '<”H”lfrp>t<”F”ip>',
+        'sDom': '<"fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix" lfrp>t<"fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
         /**
          * ColumnDefs has many options for manipulation of column specific data
          * mRender can be used to render column data from json object

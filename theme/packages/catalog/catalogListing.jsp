@@ -18,19 +18,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%-- 
-            Specify that modern IE versions should render the page with their own 
-            rendering engine (as opposed to falling back to compatibility mode.
-            NOTE: THIS HAS TO BE RIGHT AFTER <head>!
-        --%>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charset="utf-8">
-        <title>
-            <%= bundle.getProperty("companyName")%>
-            | A-Z Listing
-        </title>
         <%-- Include the common content. --%>
         <%@include file="../../common/interface/fragments/head.jspf"%>
+        <title>
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;A-Z&nbsp;Listing
+        </title>
         <!-- Common Flyout navigation -->
         <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
 

@@ -34,7 +34,7 @@ table.approvals-completed tbody tr.odd td.sorting_1:hover { color: #000000; }
 }
 
 /* Entries selection for datatables */
-.dataTables_length { width: 40%; float: left; }
+.dataTables_length { float: left; }
 
 /* Search */
 .dataTables_filter { width: 50%; float: right; text-align: right; }

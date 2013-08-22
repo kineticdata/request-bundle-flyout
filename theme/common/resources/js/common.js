@@ -1,4 +1,30 @@
-$(document).ready(function() {});
+$(document).ready(function() {
+    // Set some states
+    $('form#catalog-search p label.infield').inFieldLabels();
+    /*
+    $('form#catalog-search').on('focus', 'input[type="search"]', function(event) {
+        event.preventDefault();
+        $(this).animate({width:'+=100px'}, 'linear');
+        $(this).css('background-color', 'white');
+    });
+    var submitFlag = false;
+    $('form#catalog-search').on('focusout', 'input[type="search"]', function(event) {
+        event.preventDefault();
+        var jQueryObject = this;
+        if(!submitFlag) {
+            setTimeout(function(){
+                $(jQueryObject).animate({width:'-=124px'}, 'linear');
+                $(jQueryObject).css('background-color', 'rgb(228, 228, 228)');
+            }, 200);
+        } else {
+            submitFlag = false;
+        }
+    });
+    $('form#catalog-search').on('click', 'button[type="submit"]', function(event) {
+        submitFlag = true;
+    });
+    */
+});
 // Returns the version of Internet Explorer or a -1
 // (indicating the use of another browser).
 // From: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx

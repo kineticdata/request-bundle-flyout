@@ -24,23 +24,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%-- 
-            Specify that modern IE versions should render the page with their own 
-            rendering engine (as opposed to falling back to compatibility mode.
-            NOTE: THIS HAS TO BE RIGHT AFTER <head>!
-        --%>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charset="utf-8">
+        <%-- Include the bundle common content. --%>
+        <%@include file="../../common/interface/fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>
-            |
+            <%= bundle.getProperty("companyName")%>&nbsp;|
             <% if(currentCategory != null) {%>
                 <%= currentCategory.getName()%> |
             <% }%>
             <%= customerRequest.getTemplateName()%>
         </title>
-        <%-- Include the bundle common content. --%>
-        <%@include file="../../common/interface/fragments/head.jspf"%>
         <!-- Common Flyout navigation -->
         <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
          <!-- Page Stylesheets -->

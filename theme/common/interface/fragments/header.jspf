@@ -4,6 +4,7 @@
             <a href="<%= bundle.getProperty("catalogUrl")%>">
                 <img alt="<%= bundle.getProperty("companyName") %>" class="logo" src="<%= bundle.bundlePath()%>common/resources/images/logo.png" />
             </a>
+            <div class="service-portal">Service Portal</div>
             <div class="right-side">
                 <div class="row">
                     <nav class="nav-portals">
@@ -33,11 +34,12 @@
                 <form id="catalog-search" method="get" action="<%= bundle.applicationPath()%>DisplayPage">
                     <input type="hidden" name="name" value="<%= bundle.getProperty("searchNameParam") %>" />
                     <p>
-                       <input id="search" class="input-large" type="search" name="q" value="" />
-                       <!-- span deals with button floating incorrectly next to input in ie 7 fail -->
-                       <span>
-                            <input type="submit" value="Search" />
-                       <span>
+                        <label class="infield" for="search">Search Catalog</label>
+                        <input id="search" class="input-large" type="search" name="q" value="" />
+                        <!-- span deals with button floating incorrectly next to input in ie 7 fail -->
+                        <span>
+                            <button class="icon-search" type="submit"></button>
+                        <span>
                     </p>
                 </form>
             </div>

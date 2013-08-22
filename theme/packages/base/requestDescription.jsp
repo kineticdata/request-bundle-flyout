@@ -41,26 +41,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%-- 
-            Specify that modern IE versions should render the page with their own 
-            rendering engine (as opposed to falling back to compatibility mode.
-            NOTE: THIS HAS TO BE RIGHT AFTER <head>!
-        --%>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta charset="utf-8">
+        <%-- Include the common content. --%>
+        <%@include file="../../common/interface/fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>
-            |
-            <%= currentCategory.getName()%>
-            | 
-            <%= requestTemplate.getName()%>
+            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;<%= currentCategory.getName()%>&nbsp;|&nbsp;<%= requestTemplate.getName()%>
         </title>
         <%-- Include the application head content. --%>
         <%@include file="../../core/interface/fragments/applicationHeadContent.jspf"%>
         <%@include file="../../core/interface/fragments/displayHeadContent.jspf"%>
 
-        <%-- Include the common content. --%>
-        <%@include file="../../common/interface/fragments/head.jspf"%>
         <!-- Common Flyout navigation -->
         <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
 
