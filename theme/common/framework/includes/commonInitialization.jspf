@@ -20,7 +20,7 @@
 <%@include file="../../framework/helpers/CookieHelper.jspf" %>
 <%@include file="../../framework/helpers/MobileDetectionHelper.jspf" %>
 <%@include file="../../framework/helpers/DescriptionHelper.jspf" %>
-
+<%@include file="../../framework/helpers/LogHelper.jspf" %>
 
 <%--
     Include any model files.
