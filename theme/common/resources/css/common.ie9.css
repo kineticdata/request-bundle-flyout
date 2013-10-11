@@ -1,10 +1,10 @@
 @charset "utf-8";
 
-hr.soften {
-  border: 0;
-  border-top: 1px solid #eeeeee;
-  border-bottom: 1px solid #ffffff;
-}
-nav ul.nav li.root a {
-    padding: 10px 52px 11px 52px;
+nav ul.nav li.root a { padding: 10px 52px 11px 52px; }
+hr.soften { border: 0; border-top: 1px solid #eeeeee; border-bottom: 1px solid #ffffff; }
+form#catalog-search input[type="text"] {
+    padding-top: 10px;
+    height: 18px;
+    width: 400px;
+    float: left;
 }
