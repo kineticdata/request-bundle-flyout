@@ -12,6 +12,12 @@
     // that they are available.  Preloading all of the related objects at once
     // is more efficient than loading them individually.
     catalog.preload(context);
+
+    String submissionType = request.getParameter("type");
+    // Determine if the type exists and is set and is a real type
+    if(submissionType == null || !submissionType.equals("requests") && !submissionType.equals("approvals")) {
+        submissionType = "requests";
+    }
 %>
 <!DOCTYPE html>
 <html>
@@ -19,7 +25,12 @@
         <%-- Include the common content. --%>
         <%@include file="../../common/interface/fragments/head.jspf"%>
         <title>
-            <%= bundle.getProperty("companyName")%>&nbsp;|&nbsp;My&nbsp;Request
+            <%= bundle.getProperty("companyName")%>&nbsp;|
+            <% if(submissionType.equals("requests")) {%>
+                My&nbsp;Requests&nbsp;(<%= totalRequests%>)
+            <% } else if(submissionType.equals("approvals")) {%>
+                My&nbsp;Approvals&nbsp;(<%= totalApprovals%>)
+            <%}%>
         </title>
         <!-- Common Flyout navigation -->
         <script type="text/javascript" src="<%=bundle.bundlePath()%>common/resources/js/flyout.js"></script>
@@ -44,27 +55,46 @@
             <div id="submissions" class="hidden">
                 <table class="hidden"></table>
             </div>
+            <div class="results-message hidden"></div>
             <%-- SUBMISSION TABLE LINKS --%>
             <% if (context != null) { %>
                 <nav class="submissions-navigation">
                     <ul>
-                        <% for (String groupName : submissionGroups.keySet()) { %>
-                            <%-- Count the number of submissions that match the current query --%>
-                            <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
-                            <%-- If there are more than 0 records matching, display a link to the table. --%>
-                            <% if (count > 0) { %>
-                                <li class="">
-                                    <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&status=<%=groupName%>">
-                                        <%=count%>&nbsp;
-                                        <% if (count > 1) { %>
-                                            <%=groupName%>s
-                                        <% } else {%>
-                                            <%=groupName%>
-                                        <% }%>
-                                    </a>
-                                </li>
+                        <% if(submissionType.equals("requests")) {%>
+                            <% for (String groupName : submissionGroups.keySet()) { %>
+                                <% if(requestsFilter.contains(groupName)) {%>
+                                    <%-- Count the number of submissions that match the current query --%>
+                                    <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                                    <li class="">
+                                        <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=requests&status=<%=groupName%>">
+                                            <%=count%>&nbsp;
+                                            <% if (count != 1) { %>
+                                                <%=groupName%>s
+                                            <% } else {%>
+                                                <%=groupName%>
+                                            <% }%>
+                                        </a>
+                                    </li>
+                                <%}%>
                             <% }%>
-                        <% }%>
+                        <% } else if(submissionType.equals("approvals")) {%>
+                            <% for (String groupName : submissionGroups.keySet()) { %>
+                                <% if(approvalsFilter.contains(groupName)) {%>
+                                    <%-- Count the number of submissions that match the current query --%>
+                                    <% Integer count = ArsBase.count(context, "KS_SRV_CustomerSurvey", submissionGroups.get(groupName)); %>
+                                    <li class="">
+                                        <a data-group-name="<%=groupName%>" href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals&status=<%=groupName%>">
+                                            <%=count%>&nbsp;
+                                            <% if (count != 1) { %>
+                                                <%=groupName%>s
+                                            <% } else {%>
+                                                <%=groupName%>
+                                            <% }%>
+                                        </a>
+                                    </li>
+                                <%}%>
+                            <% }%>
+                        <%}%>
                     </ul>
                 </nav>
             <% }%>

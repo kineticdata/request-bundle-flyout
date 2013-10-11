@@ -1,37 +1,95 @@
-// Load table on Page load
-$(document).ready(function() {
-    $('nav ul.nav li.root a.submissions').addClass('nav-hover');
-    var loader = '#loader';
+$(function() {
     // Instantiate object
     var arsUrl = new ArsUrl();
-
+    var loader = $('div#loader');
+    var responseMessage = $('div.results-message');
+    // Get query string parameters into an object
     var urlParameters = getUrlParameters();
-    if(!urlParameters.status) {
-        urlParameters.status = "Open Request";
+    // Determine if type is a real type
+    if(urlParameters.type !== 'requests' && urlParameters.type !== 'approvals') {
+        urlParameters.type = 'requests';
     }
-    if(BUNDLE['config'][urlParameters.status+' Count'] > 0) {
-        // Initialize datatables
-        intializeDataTable(tableParams, urlParameters.status, arsUrl);
-        $(tableParams[urlParameters.status].container).show();
-    } else {
-        $(loader).hide();
-        $('section.container').prepend('<h3>There Are No '+ urlParameters.status+'</h3>');
+    // Determine if the status is a real status
+    var statusCheck = true;
+    $.each(tableParams, function(index) { 
+        if(urlParameters.status === index) {
+            statusCheck = false;
+            return false;
+        }
+    });
+    if(statusCheck) {
+        if(urlParameters.type === 'requests') {
+            urlParameters.status = 'Open Request';
+        } else {
+             urlParameters.status = 'Pending Approval';
+        }
     }
+    // Set active link
     $('nav.submissions-navigation ul li').each(function(index, value) {
         if(urlParameters.status == $(this).find('a').data('group-name')) {
             $(this).find('a').addClass('active');
         }
     });
-    $('#status').text(urlParameters.status+' '+$('#status').text());
-    $('nav.submissions-navigation ul').on('click', 'li a', function(event) {
-        //event.preventDefault();
-        $('#submissions').hide();
-        $(loader).show();
-        /*$('nav.submissions-navigation ul li a').removeClass('active');
-        $(this).addClass('active');
-        // Initialize datatables
-        intializeDataTable(tableParams, $(this).data('group-name'), arsUrl);
-        $(tableParams[$(this).data('group-name')].container).show();*/
+
+    // Initialize datatables
+    // Get table specific properties
+    var table = tableParams[urlParameters.status];
+    // Fluent interface to set properties and build url
+    arsUrl.setForm(table.formDefinition.form)                 
+            .setFields(table.formDefinition.fields)
+            .setFieldIds()
+            .setQualification(table.qualification)
+            .setUrl(BUNDLE.packagePath + 'interface/callbacks/dataTablesSubmissions.json.jsp');
+        
+    // Datatable
+    $(table.container).dataTable({
+        'bPaginate': true,
+        'bSort': true,
+        'bLengthChange': true,
+        'bInfo': true,
+        'bDestroy': true,
+        'bFilter': false,
+        'iDisplayStart': 0,
+        'iDisplayLength': 10,
+        'bJQueryUI': true,
+        'sAjaxDataProp': 'aaData',
+        'bProcessing': true,
+        'bServerSide': true,
+        'sAjaxSource': arsUrl.getUrl(),
+        'sPaginationType': 'full_numbers',
+        'aaSorting': [[1, 'desc']],
+        'sDom': '<"fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix" lfrp>t<"fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
+        /**
+         * ColumnDefs has many options for manipulation of column specific data
+         * mRender can be used to render column data from json object
+         */
+        'aoColumnDefs': table.columnDefinitions,
+        'fnServerData': function (sSource, aoData, fnCallback, oSettings) { 
+            oSettings.jqXHR = BUNDLE.ajax({
+                'dataType': 'json',
+                'type': 'get',
+                'url': sSource,
+                'data': aoData,
+                'success': function(json) {
+                    if(json.iTotalDisplayRecords > 0) {
+                        fnCallback(json);
+                        $('h3').hide();
+                    } else {
+                        loader.hide();
+                        responseMessage.html('<h3>There Are No ' + urlParameters.status + 's</h3>').show();
+                    }       
+                }
+            });
+        },
+        'fnRowCallback': function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
+            table.rowCallback(table, nRow, aData, iDisplayIndex, iDisplayIndexFull);
+        },
+        'fnInitComplete': function(oSettings, json) {
+            table.completeCallback(table, oSettings, json);
+            $(loader).hide();
+            $('#submissions').fadeIn();
+            $(table.container).show();
+        }
     });
 });
 
@@ -340,60 +398,3 @@ tableParams = {
         completeCallback: completedApprovalsCompleteCallback
     }
 };
-
-/**
- * Data tables
- */
-function intializeDataTable(tableParams, groupName, arsUrl) {
-    // Get table specific properties
-    var table = tableParams[groupName];
-    // Fluent interface to set properties and build url
-    arsUrl.setForm(table.formDefinition.form)                 
-            .setFields(table.formDefinition.fields)
-            .setFieldIds()
-            .setQualification(table.qualification)
-            .setUrl(BUNDLE.packagePath + 'interface/callbacks/dataTablesSubmissions.json.jsp');
-        
-    // Datatable
-    $(table.container).dataTable({
-        'bPaginate': true,
-        'bSort': true,
-        'bLengthChange': true,
-        'bInfo': true,
-        'bDestroy': true,
-        'bFilter': false,
-        'iDisplayStart': 0,
-        'iDisplayLength': 10,
-        'bJQueryUI': true,
-        'sAjaxDataProp': 'aaData',
-        'bProcessing': true,
-        'bServerSide': true,
-        'sAjaxSource': arsUrl.getUrl(),
-        'sPaginationType': 'full_numbers',
-        'aaSorting': [[1, 'desc']],
-        'sDom': '<"fg-toolbar ui-toolbar ui-widget-header ui-corner-tl ui-corner-tr ui-helper-clearfix" lfrp>t<"fg-toolbar ui-toolbar ui-widget-header ui-corner-bl ui-corner-br ui-helper-clearfix"ip>',
-        /**
-         * ColumnDefs has many options for manipulation of column specific data
-         * mRender can be used to render column data from json object
-         */
-        'aoColumnDefs': table.columnDefinitions,
-        'fnServerData': function (sSource, aoData, fnCallback, oSettings) { 
-            oSettings.jqXHR = BUNDLE.ajax({
-              'dataType': 'json',
-              'type': 'get',
-              'url': sSource,
-              'data': aoData,
-              'success': fnCallback
-            });
-        },
-        'fnRowCallback': function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {
-            table.rowCallback(table, nRow, aData, iDisplayIndex, iDisplayIndexFull);
-        },
-        'fnInitComplete': function(oSettings, json) {
-            table.completeCallback(table, oSettings, json);
-            $(loader).hide();
-            $('#submissions').fadeIn();
-            $(table.container).show();
-        }
-    });
-}

@@ -15,7 +15,12 @@
                             </li>
                         <% } %>
                         <li>
-                            <a href="<%= bundle.getProperty("submissionsUrl")%>">
+                            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=approvals">
+                                My Approvals
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<%= bundle.getProperty("submissionsUrl")%>&type=requests">
                                 My Requests
                             </a>
                         </li>
@@ -134,7 +139,7 @@
                             Popular Requests
                         </a> 
                     </li>
-                    <li class="root">
+                    <li class="root last">
                         <a class="a-z" href="<%= bundle.getProperty("catalogListingUrl")%>">
                             A-Z Listing
                         </a> 
