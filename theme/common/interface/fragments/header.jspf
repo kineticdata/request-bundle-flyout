@@ -39,7 +39,7 @@
                         <!-- span deals with button floating incorrectly next to input in ie 7 fail -->
                         <span>
                             <button class="icon-search" type="submit"></button>
-                        <span>
+                        </span>
                     </p>
                 </form>
             </div>
