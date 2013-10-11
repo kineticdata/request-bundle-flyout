@@ -50,6 +50,7 @@ tr.odd td.sorting_1:hover { color: #006699; }
     background-image: -webkit-linear-gradient(top, #FFFFFF 20%, #E5E5E5 100%);
     /* W3C Markup, IE10 Release Preview */ 
     background-image: linear-gradient(to bottom, #FFFFFF 20%, #E5E5E5 100%);
+    background-color: #E5E5E5;
 }
 
 /* Borders */
@@ -249,7 +250,6 @@ input[type="submit"].gray {
     box-shadow:inset 0px 1px 0px 0px #CCCCCC;
     color: #3D6699;
     border-color: #C0C0C0 #C0C0C0 #C0C0C0;
-    background-color: #DEDEDE;
     /* IE10 Consumer Preview */ 
     background-image: -ms-linear-gradient(top, #DEDEDE 30%, #BABABA 100%);
     /* Mozilla Firefox */ 
@@ -264,6 +264,7 @@ input[type="submit"].gray {
     background-image: linear-gradient(to bottom, #DEDEDE 30%, #BABABA 100%);
     /* IE9 and lower */
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#DEDEDE', endColorstr='#BABABA');
+    background-color: #DEDEDE;
 }
 a.gray:hover,
 a.gray:focus,
@@ -271,7 +272,6 @@ input[type="button"].gray:hover,
 input[type="button"].gray:focus,
 input[type="submit"].gray:hover,
 input[type="submit"].gray:focus {
-    background-color:#BABABA;
     /* IE10 Consumer Preview */ 
     background-image: -ms-linear-gradient(top, #BABABA 20%, #DEDEDE 100%);
     /* Mozilla Firefox */ 
@@ -286,6 +286,7 @@ input[type="submit"].gray:focus {
     background-image: linear-gradient(to bottom, #BABABA 20%, #DEDEDE 100%);
     /* IE9 and lower */
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#BABABA', endColorstr='#DEDEDE');
+    background-color:#BABABA;
 }
 a.gray:active { position:relative; top:1px; }
 
@@ -829,29 +830,30 @@ nav ul.nav li.root a {
     font-size: 14px;
     line-height: 16px;
 }
-nav ul.nav li.root a:hover {
-    background-color: #3D6699;
-    color: white;
-}
-/* this class for jquery */
-nav ul.nav li.nav-hover {
-    background-color: #3D6699;
-    color: white;
-}
-nav ul.nav li.root a.nav-hover {
-    background-color: #3D6699;
-    color: white;
-}
+nav ul.nav li.nav-hover,
+nav ul.nav li.root a:hover,
+nav ul.nav li.dropdown:hover,
+nav ul.nav li.root a.nav-hover,
 nav ul.nav li.last a.nav-hover {
+    /* IE10 Consumer Preview */ 
+    background-image: -ms-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
+    /* IE9 and lower */
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#4C80BF', endColorstr='#3D6699');
+    /* Mozilla Firefox */ 
+    background-image: -moz-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
+    /* Opera */ 
+    background-image: -o-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
+    /* Webkit (Safari/Chrome 10) */ 
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(.3, #4C80BF), color-stop(1, #3D6699));
+    /* Webkit (Chrome 11+) */ 
+    background-image: -webkit-linear-gradient(top, #4C80BF 30%, #3D6699 100%);
+    /* W3C Markup, IE10 Release Preview */ 
+    background-image: linear-gradient(to bottom, #4C80BF 30%, #3D6699 100%);
     background-color: #3D6699;
     color: white;
-    border-top-right-radius: 5px;
 }
-nav ul.nav li.dropdown:hover {
-    background-color: #3D6699;
-    color: white;
-    border-top-left-radius: 5px;
-}
+nav ul.nav li.last a.nav-hover { border-top-right-radius: 5px; }
+nav ul.nav li.dropdown:hover { border-top-left-radius: 5px; }
 nav ul.nav li.dropdown a.dropdown-toggle {
     background-color: #3D6699;
     color: white;
