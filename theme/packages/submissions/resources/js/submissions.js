@@ -98,7 +98,7 @@ columnDefinitionsDefault = [
         }                 
     },
     {
-        'aTargets': [3],
+        'aTargets': [2],
         'sTitle': 'Service Item',
         'iDataSort': formDefinitionDefault.fields['Service Item'],
         'mRender': function (data, type, full) {
@@ -106,7 +106,7 @@ columnDefinitionsDefault = [
         }                 
     },
     {
-        'aTargets': [4],
+        'aTargets': [3],
         'sTitle': 'Status',
         'iDataSort': formDefinitionDefault.fields['Status'],
         'mRender': function (data, type, full) {
@@ -136,7 +136,7 @@ columnDefinitionsDrafts = [
         }                 
     },
     {
-        'aTargets': [3],
+        'aTargets': [2],
         'sTitle': 'Service Item',
         'iDataSort': formDefinitionDrafts.fields['Service Item'],
         'mRender': function (data, type, full) {
@@ -144,7 +144,7 @@ columnDefinitionsDrafts = [
         }                 
     },
     {
-        'aTargets': [4],
+        'aTargets': [3],
         'sTitle': 'Status',
         'iDataSort': formDefinitionDrafts.fields['Status'],
         'mRender': function (data, type, full) {
@@ -174,7 +174,7 @@ columnDefinitionsPendingApprovals = [
         }                 
     },
     {
-        'aTargets': [3],
+        'aTargets': [2],
         'sTitle': 'Service Item',
         'iDataSort': formDefinitionPendingApprovals.fields['Service Item'],
         'mRender': function (data, type, full) {
@@ -182,7 +182,7 @@ columnDefinitionsPendingApprovals = [
         }                 
     },
     {
-        'aTargets': [4],
+        'aTargets': [3],
         'sTitle': 'Status',
         'iDataSort': formDefinitionPendingApprovals.fields['Status'],
         'mRender': function (data, type, full) {
@@ -292,12 +292,6 @@ function requestsParkedCompleteCallback(table, oSettings, json) {
 function completedApprovalsCompleteCallback(table, oSettings, json) {
     // Add this class so we can disable table row hovers and cursor looks using css
     $(table.container).addClass('approvals-completed');
-    // Unobstrusive live click event to start service item again
-    /*$('#submissions').on('click', 'table tbody tr', function(event) {
-        // Prevent default action.
-        event.preventDefault();
-        window.open(BUNDLE.applicationPath + 'ReviewRequest?csrv=' + $(this).data('csrv') + '&excludeByName=Review%20Page&reviewPage=' + BUNDLE.config.reviewJsp);
-    });*/
 }
 
 /**
