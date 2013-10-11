@@ -46,8 +46,10 @@
                     <div class="category-image">
                         <%= currentCategory.getImageTag()%>
                     </div>
+                    <div class="wrap-float">
+                <% } else { %>
+                    <div class="wrap">
                 <% }%>
-                <div class="wrap">
                     <h2>
                         <%= currentCategory.getName()%>
                     </h2>
@@ -55,6 +57,7 @@
                         <%= currentCategory.getDescription()%>
                     </div>
                 </div>
+                <div class="clearfix"></div>
                 <hr class="soften">
             </header>
         <% }%>
@@ -66,7 +69,7 @@
                             <div class="content-wrap">
                                     <% if (template.hasTemplateAttribute("ServiceItemImage")) { %>
                                         <div class="image">
-                                            <img width="120px" src="<%= bundle.bundlePath()+"../../surveys/kineticImageLibrary/"+template.getTemplateAttributeValue("ServiceItemImage") %>" />
+                                            <img width="120px" src="<%= bundle.getProperty("serviceItemImagePath") + template.getTemplateAttributeValue("ServiceItemImage")%>" />
                                         </div>
                                         <div class="description">
                                     <% } else {%>

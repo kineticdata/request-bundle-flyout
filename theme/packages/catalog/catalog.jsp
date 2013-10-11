@@ -54,7 +54,7 @@
                                 <div class="content-wrap"> 
                                         <% if (popularRequest.hasTemplateAttribute("ServiceItemImage")) { %>
                                             <div class="image">
-                                                <img width="80px" src="<%= bundle.bundlePath()+"../../surveys/kineticImageLibrary/"+popularRequest.getTemplateAttributeValue("ServiceItemImage") %>" />
+                                                <img width="120px" src="<%= bundle.getProperty("serviceItemImagePath") + popularRequest.getTemplateAttributeValue("ServiceItemImage")%>" />
                                             </div>
                                             <div class="description">
                                         <% } else {%>

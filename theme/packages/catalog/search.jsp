@@ -101,7 +101,7 @@
                             <div class="content-wrap">
                                 <% if (matchingTemplates[i].hasTemplateAttribute("ServiceItemImage")) { %>
                                     <div class="image">
-                                        <img width="120px" src="<%= bundle.bundlePath()+"../../surveys/kineticImageLibrary/"+matchingTemplates[i].getTemplateAttributeValue("ServiceItemImage") %>" />
+                                        <img width="120px" src="<%= bundle.getProperty("serviceItemImagePath") + matchingTemplates[i].getTemplateAttributeValue("ServiceItemImage")%>" />
                                     </div>
                                     <div class="description">
                                 <% } else {%>
