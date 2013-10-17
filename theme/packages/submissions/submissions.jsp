@@ -52,7 +52,7 @@
                 Loading Results
             </div>
             <%-- SUBMISSIONS VIEW --%>
-            <div id="submissions" class="hidden">
+            <div id="submissions" class="hidden" data-template-id="<%= customerSurvey.getSurveyTemplateInstanceID()%>">
                 <table class="hidden"></table>
             </div>
             <div class="results-message hidden"></div>

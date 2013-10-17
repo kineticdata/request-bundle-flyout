@@ -1,14 +1,15 @@
 <%@page contentType="text/html; charset=UTF-8"%>
 <%@include file="../../framework/includes/packageInitialization.jspf"%>
 <%
-    // Define vairables we are working with
+    // Define vairables
     String submissionId = null;
     Submission submission = null;
-    String templateId = "KSGAA5V0FUPJHAMROO5DEB9S66EETP";
+    String templateId = null;
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
+        templateId = request.getParameter("templateId");
         submission = Submission.findByInstanceId(context, request.getParameter("csrv"));
     }
 %>

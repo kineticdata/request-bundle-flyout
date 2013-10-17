@@ -289,11 +289,13 @@ function requestsOpenClosedCompleteCallback(table, oSettings, json) {
         event.preventDefault();
         // Store CSRV
         csrv = $(this).data('csrv');
+        // Store submission's jsp template id
+        templateId = $(this).parents('#submissions').data('template-id');
         // Execute the ajax request.
         BUNDLE.ajax({
             cache: false,
             type: 'get',
-            url: BUNDLE.packagePath + 'interface/callbacks/submissionDetails.html.jsp?csrv=' + csrv,
+            url: BUNDLE.packagePath + 'interface/callbacks/submissionDetails.html.jsp?csrv=' + csrv + '&templateId=' + templateId,
             beforeSend: function(jqXHR, settings) {
                 // Fluent interface to set properties and start dialog
                 dialogInit.setDialogSelector($('<div class="submission-details-wrap">')) 
