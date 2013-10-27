@@ -24,7 +24,6 @@
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.css" />
 <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/ajaxLogin.css" />
 <!--[if IE 7]>
-    <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/font-awesome-ie7.min.css" />
     <link rel="stylesheet" type="text/css" href="<%=bundle.bundlePath()%>common/resources/css/common.ie7.css" />
 <![endif]-->
 <!--[if IE 8]>
