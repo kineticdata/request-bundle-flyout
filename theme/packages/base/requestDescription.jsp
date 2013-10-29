@@ -66,7 +66,7 @@
                 <%= currentCategory.getName()%>: <%= requestTemplate.getName()%>
             </h2>
                 <a class="templateButton create-request hidden" href="<%= requestTemplate.getAnonymousUrl()%>&category=<%= URLEncoder.encode(currentCategory.getFullName(), "UTF-8")%>" class="">
-                    <i class="icon-share-alt"></i>Request this Service
+                    <i class="fa fa-share"></i>Request this Service
                 </a>
             <hr class="soften">
         </header>

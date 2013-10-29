@@ -2,10 +2,17 @@
     Submission config
     NOTE: This file is required.
 --%>
-<%  java.util.Map<String,String> submissionGroups = new java.util.LinkedHashMap();
+<%
+    bundle.setProperty("submissionActivityUrl", bundle.applicationPath() + "DisplayPage?name=Flyout-SubmissionsActivity");
+
+    // Auto created requests type
+    bundle.setProperty("autoCreatedRequestType", "Auto Created Requests");
+
+    /* These qualfications are designed for custiomer survey, not customer survey base! */
+    java.util.Map<String,String> submissionGroups = new java.util.LinkedHashMap();
     if (context != null) {
         submissionGroups.put("Draft Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"In Progress\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
-        submissionGroups.put("Open Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
+        submissionGroups.put("Open Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Open\" AND 'Submitter'=\""+context.getUserName()+"\" AND 'Submit Type'=$NULL$ AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
         submissionGroups.put("Closed Request", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=$NULL$ AND 'Submitter'=\""+context.getUserName()+"\" AND ('Type' != \"Utility\" OR 'Type' = $NULL$)");
         submissionGroups.put("Pending Approval",   "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'CustomerSurveyStatus'=\"Sent\" AND 'Request_Status'=\"Open\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
         submissionGroups.put("Completed Approval", "'ApplicationName'=\"Kinetic Request\" AND 'Category'=\""+bundle.getProperty("catalogName")+"\" AND 'ApplicationName'=\"Kinetic Request\" AND 'CustomerSurveyStatus'=\"Completed\" AND 'Request_Status'=\"Closed\" AND 'Submit Type'=\"Approval\" AND 'Submitter'=\""+context.getUserName()+"\"");
@@ -33,7 +40,8 @@
             }
         }
     }
-    
+
+    // Used for gathering ticket information in submission activity page
     bundle.setProperty("incidentHandler", "bmc_itsm7_incident_create_v2");
     bundle.setProperty("changeHandler", "bmc_itsm7_change_create_v2");
 %>

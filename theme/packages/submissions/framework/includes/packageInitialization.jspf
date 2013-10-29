@@ -41,11 +41,19 @@
       <%@include file="../models/kineticSample/Change.jspf
       <%@include file="../models/kineticSample/Incident.jspf
       <%@include file="../models/kineticSample/Person.jspf
+      
+      // These files require includes in core includes bundleInitializiation.jspf to work
+      <%@include file="../models/IncidentBridge.jspf" %>
+      <%@include file="../models/ChangeBridge.jspf" %>
+      <%@include file="../models/ChangeAudit.jspf" %>
+      <%@include file="../models/IncidentAudit.jspf" %>
 --%>
+<%@include file="../models/SubmissionConsole.jspf" %>
+<%@include file="../models/TemplateAttributeConsole.jspf" %>
 <%@include file="../models/Incident.jspf" %>
-<%@include file="../models/IncidentWorkInfo.jspf" %>
+<%@include file="../models/IncidentWorkLog.jspf" %>
 <%@include file="../models/Change.jspf" %>
-<%@include file="../models/ChangeWorkInfo.jspf" %>
+<%@include file="../models/ChangeWorkLog.jspf" %>
 
 <%--
     Instantiate any appropriate helper objects.  By convention, the

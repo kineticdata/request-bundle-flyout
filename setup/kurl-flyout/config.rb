@@ -15,7 +15,8 @@ CATALOG_PAGE = "#{THEMES_BASE}/packages/catalog/catalog.jsp"
 CATALOG_LISTING_PAGE = "#{THEMES_BASE}/packages/catalog/catalogListing.jsp"
 CATEGORY_PAGE = "#{THEMES_BASE}/packages/catalog/category.jsp"
 SEARCH_PAGE = "#{THEMES_BASE}/packages/catalog/search.jsp"
-SUBMISSIONS_PAGE = "#{THEMES_BASE}/packages/submissions/submissions.jsp"
+SUBMISSIONS_PAGE = "#{THEMES_BASE}/packages/submissions/submissionsList.jsp"
+SUBMISSIONS_ACTIVITY_PAGE = "#{THEMES_BASE}/packages/submissions/submissionActivity.jsp"
 
 # Used in Network Service Items - for domain name mgmt
 COMPANY_BASE_DOMAIN_NAME = "kineticdata.com"

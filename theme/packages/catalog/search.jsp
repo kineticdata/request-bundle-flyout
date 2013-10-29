@@ -149,7 +149,7 @@
                                     <% }%>
                                 <%}%>
                                 <a class="templateButton" href="<%= matchingTemplates[i].getAnonymousUrl()%>">
-                                    <i class="icon-share-alt"></i>Request this Service
+                                    <i class="fa fa-share"></i>Request this Service
                                 </a>
                             </div>
                         </li>

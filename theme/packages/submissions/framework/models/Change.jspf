@@ -21,6 +21,7 @@
         public String getSummary() { return get("Summary"); }
         public String getNotes() { return get("Notes"); }
         public String getStatus() { return get("Status"); }
+        public String getStatusReason() { return get("Status Reason"); }
         public String getPriority() { return get("Priority"); }
         public String getToken() { return get("Token"); }
     }
