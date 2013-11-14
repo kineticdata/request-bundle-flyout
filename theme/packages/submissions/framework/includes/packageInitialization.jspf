@@ -49,7 +49,6 @@
       <%@include file="../models/IncidentAudit.jspf" %>
 --%>
 <%@include file="../models/SubmissionConsole.jspf" %>
-<%@include file="../models/TemplateAttributeConsole.jspf" %>
 <%@include file="../models/Incident.jspf" %>
 <%@include file="../models/IncidentWorkLog.jspf" %>
 <%@include file="../models/Change.jspf" %>

@@ -16,12 +16,17 @@
     // Define vairables we are working with
     String templateId = null;
     SubmissionConsole submission = null;
+    Template submissionTemplate = null;
     CycleHelper zebraCycle = new CycleHelper(new String[]{"odd", "even"});
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
         templateId =  customerSurvey.getSurveyTemplateInstanceID();
-        submission = SubmissionConsole.findByInstanceId(context, customerRequest.getCatalogName(), request.getParameter("id"));
+        submission = SubmissionConsole.findByInstanceId(context, catalog, request.getParameter("id"));
+        submissionTemplate = submission.getTemplate();
+        if (submissionTemplate == null) {
+            throw new Exception("Either the template no longer exists or bundle not configured to correct catalog");
+        }
     }
 %>
 <!DOCTYPE html>
@@ -89,9 +94,9 @@
                             Service Requested
                         </h3>
                         <div class="content-wrap">
-                            <% if(submission.getServiceItemImage() != null) {%>
+                            <% if(submissionTemplate.hasTemplateAttribute("ServiceItemImage")) {%>
                                 <div class="image">
-                                    <img width="60px" src="<%= bundle.getProperty("serviceItemImagePath")%><%= submission.getServiceItemImage()%>">
+                                    <img width="60px" src="<%= bundle.getProperty("serviceItemImagePath")%><%= submissionTemplate.getTemplateAttributeValue("ServiceItemImage")%>">
                                 </div>
                             <%}%>
                             <div class="originating-name">

@@ -37,44 +37,60 @@
         // Ticketing Application, will contain Remedy form name or any ticketing application name
         public static final String FIELD_ATTRIBUTE_53 = "700001853";
         public static final String FIELD_ATTRIBUTE_54 = "700001854";
+        // Service Item Cost charged to the requester/requesting organization is stored in attribute 62 since we have no defined field
+        public static final String FIELD_ATTRIBUTE_62 = "700001862";
+        // SLA Status is stored in attribute 64 since we have no defined field
+        public static final String FIELD_ATTRIBUTE_64 = "700001864";
 
         public static final String[] FIELD_IDS = new String[] {
-            FIELD_ID, FIELD_TEMPLATE_ID, FIELD_REQUEST_ID, FIELD_TEMPLATE_NAME, FIELD_ORIGINATING_FORM, FIELD_ORIGINATING_ID, FIELD_ORIGINATING_REQUEST_ID, FIELD_SUBMIT_TYPE, FIELD_SURVEY_COMPLETED_DATE, FIELD_SURVEY_SENT_DATE, FIELD_MODIFIED_DATE, FIELD_VALIDATION_STATUS, FIELD_CUSTOMER_SURVEY_STATUS, FIELD_TYPE, FIELD_ATTRIBUTE_5, FIELD_ATTRIBUTE_6, FIELD_NOTES, FIELD_REQUEST_STATUS, FIELD_CREATE_DATE, FIELD_REQUEST_CLOSED_DATE, FIELD_ATTRIBUTE_52, FIELD_ATTRIBUTE_53, FIELD_ATTRIBUTE_54, FIELD_NOTES_FOR_CUSTOMER
+            FIELD_ID, FIELD_TEMPLATE_ID, FIELD_REQUEST_ID, FIELD_TEMPLATE_NAME, FIELD_ORIGINATING_FORM, FIELD_ORIGINATING_ID, FIELD_ORIGINATING_REQUEST_ID, FIELD_SUBMIT_TYPE, FIELD_SURVEY_COMPLETED_DATE, FIELD_SURVEY_SENT_DATE, FIELD_MODIFIED_DATE, FIELD_VALIDATION_STATUS, FIELD_CUSTOMER_SURVEY_STATUS, FIELD_TYPE, FIELD_ATTRIBUTE_5, FIELD_ATTRIBUTE_6, FIELD_NOTES, FIELD_REQUEST_STATUS, FIELD_CREATE_DATE, FIELD_REQUEST_CLOSED_DATE, FIELD_ATTRIBUTE_52, FIELD_ATTRIBUTE_53, FIELD_ATTRIBUTE_54, FIELD_NOTES_FOR_CUSTOMER, FIELD_ATTRIBUTE_62, FIELD_ATTRIBUTE_64
         };
 
-        private TemplateAttributeConsole serviceItemImageAttribute;
+        private Template template = null;
         private SimpleEntry entry = null;
         private Task[] tasks;
         private Map<String,List<Task>> taskTreeExecutions;
 
-        public static SubmissionConsole[] find(HelperContext context, String catalogName, String qualification, String[] sortFields, Integer chunkSize, Integer recordOffset, Integer sortOrder) {
+        public static SubmissionConsole[] find(HelperContext context, Catalog catalog, String qualification, String[] sortFields, Integer chunkSize, Integer recordOffset, Integer sortOrder) {
             SubmissionConsole[] results = new SubmissionConsole[0];
 
             SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, sortFields, chunkSize, recordOffset, sortOrder);
             if (entries != null && entries.length > 0) {
                 results = new SubmissionConsole[entries.length];
                 for(int i=0;i<results.length;i++) {
-                    results[i] = new SubmissionConsole(entries[i], context, catalogName);
+                    results[i] = new SubmissionConsole(entries[i], context, catalog);
                 }
             }
 
             return results;
         }
 
-        public static SubmissionConsole findByInstanceId(HelperContext context, String catalogName, String id) {
+        public static SubmissionConsole findByInstanceId(HelperContext context, Catalog catalog, String id) {
             SubmissionConsole result = null;
 
             SimpleEntry entry = ArsBase.findByInstanceId(context, FORM_NAME, id, FIELD_IDS);
             if (entry != null) {
-                result = new SubmissionConsole(entry, context, catalogName);
+                result = new SubmissionConsole(entry, context, catalog);
             }
 
             return result;
         }
 
-        public SubmissionConsole(SimpleEntry entry, HelperContext context, String catalogName) {
+        public static SubmissionConsole findByRequestId(HelperContext context, Catalog catalog, String id) {
+            SubmissionConsole result = null;
+
+            SimpleEntry entry = ArsBase.findByRequestId(context, FORM_NAME, id, FIELD_IDS);
+            if (entry != null) {
+                result = new SubmissionConsole(entry, context, catalog);
+            }
+
+            return result;
+        }
+
+        public SubmissionConsole(SimpleEntry entry, HelperContext context, Catalog catalog) {
             this.entry = entry;
-            this.serviceItemImageAttribute = TemplateAttributeConsole.findByTemplateNameAndAttributeName(context, catalogName, this.entry.getEntryFieldValue(FIELD_ORIGINATING_FORM), "ServiceItemImage");
+            // Get template
+            this.template = catalog.getTemplateById(this.entry.getEntryFieldValue(FIELD_TEMPLATE_ID));
         }
 
         public Task[] getTasks(HelperContext context) {
@@ -101,6 +117,7 @@
             return taskTreeExecutions;
         }
 
+        public Template getTemplate() {return this.template;}
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getTemplateId() {return entry.getEntryFieldValue(FIELD_TEMPLATE_ID);}
         public String getRequestId() {return entry.getEntryFieldValue(FIELD_REQUEST_ID);}
@@ -117,7 +134,6 @@
         public String getSubmitType() {return entry.getEntryFieldValue(FIELD_SUBMIT_TYPE);}
         public String getFirstName() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_5);}
         public String getLastName() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_6);}
-        public String getServiceItemImage() {return (this.serviceItemImageAttribute != null) ? this.serviceItemImageAttribute.getValue() : null; }
         public String getNotes() {return entry.getEntryFieldValue(FIELD_NOTES);}
         public String getRequestStatus() {return entry.getEntryFieldValue(FIELD_REQUEST_STATUS);}
         public String getCreateDate() {return entry.getEntryFieldValue(FIELD_CREATE_DATE);}
@@ -126,6 +142,9 @@
         public String getTicketingId() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_52);}
         public String getTicketingStatus() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_54);}
         public String getNotesForCustomer() {return entry.getEntryFieldValue(FIELD_NOTES_FOR_CUSTOMER);}
+        public String getSLAStatus() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_64);}
+        public String getCost() {return entry.getEntryFieldValue(FIELD_ATTRIBUTE_62);}
+        public String getServiceItemImage() {return (this.template != null && this.template.hasTemplateAttribute("ServiceItemImage")) ? this.template.getTemplateAttributeValue("ServiceItemImage") : null; }
 
         private static Map<String, String> JSON_FIELDMAP = new HashMap<String, String>() {{
             put("Closed", FIELD_REQUEST_CLOSED_DATE);
@@ -149,27 +168,25 @@
         }};
 
         public String toJson() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("{");
-            Iterator iterator = JSON_FIELDMAP.entrySet().iterator();
-            builder.append("\"Service Item Image\":").append(((this.getServiceItemImage() != null) ? "\"" + this.getServiceItemImage() + "\"" : null)).append(",");
-            while (iterator.hasNext()) {
-                Map.Entry<String, String> mapEntry = (Map.Entry) iterator.next();
-                String fieldAlias = mapEntry.getKey();
-                String fieldId = mapEntry.getValue();
+            // Build linked hash map for JSON conversion
+            Map<String, String> result = new LinkedHashMap<String, String>();
+            for (Map.Entry<String, String> element : JSON_FIELDMAP.entrySet()) {
+                String fieldAlias = element.getKey();
+                String fieldId = element.getValue();
+                String fieldValue = null;
                 if(fieldAlias.equals("Requested For")) {
-                    builder.append("\"" + fieldAlias + "\":").append("\"" + this.getFirstName() + " " + this.getLastName() + "\"");
+                    // Append first name and last name for requested for
+                    fieldValue = this.getFirstName() + " " + this.getLastName();
                 } else {
-                    builder.append("\"" + fieldAlias + "\":").append(((!entry.getEntryFieldValue(fieldId).equals("")) ? "\"" + entry.getEntryFieldValue(fieldId) + "\"" : null));
+                    if(!entry.getEntryFieldValue(fieldId).equals("")) { fieldValue = entry.getEntryFieldValue(fieldId); }
                 }
-                if (iterator.hasNext()) { builder.append(","); }
+                result.put(fieldAlias, fieldValue);
             }
-            builder.append("}");
-            return builder.toString();
+            // Service Item Image
+            result.put("Service Item Image", ((this.getServiceItemImage() != null) ? this.getServiceItemImage() : null));
+            return JSONValue.toJSONString(result);
         }
 
-        public static String getSortFieldId(String fieldName) {
-            return JSON_FIELDMAP.get(fieldName);
-        }
+        public static String getSortFieldId(String fieldName) { return JSON_FIELDMAP.get(fieldName); }
     }
 %>

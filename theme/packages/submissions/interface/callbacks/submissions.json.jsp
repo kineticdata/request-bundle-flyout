@@ -4,6 +4,10 @@
     if (context == null) {
         ResponseHelper.sendUnauthorizedResponse(response);
     } else {
+        // Retrieve the main catalog object
+        Catalog catalog = Catalog.findByName(context, bundle.getProperty("catalogName"));
+        catalog.preload(context);
+
         /*
          * Here we are pulling the parameters for the ars helpers call from the request
          * object and processing a few of them as necessary.
@@ -53,7 +57,7 @@
          * Retrieve the entries with the parameters gathered above.  Also retrieve a
          * count of the total number of entries that match the qualification.
          */
-        SubmissionConsole[] submissions = SubmissionConsole.find(context, bundle.getProperty("catalogName"), qualification, sortFieldIds, pageSize, pageOffset, sortOrder);
+        SubmissionConsole[] submissions = SubmissionConsole.find(context, catalog, qualification, sortFieldIds, pageSize, pageOffset, sortOrder);
         int count = ArsBase.count(context, SubmissionConsole.FORM_NAME, qualification);
 
         out.println("{");
