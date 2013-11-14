@@ -111,7 +111,7 @@
                                     <%= matchingTemplates[i].getName()%>
                                 </h3>
                                 <p>
-                                    <%= CatalogSearch.replaceAll(combinedPattern, matchingTemplates[i].getDescription())%>
+                                    <%= matchingTemplates[i].getDescription()%>
                                 </p>
                                 <% if (templateDescriptions.get(matchingTemplates[i].getId()) != null ) { %>
                                     <a href="<%= bundle.applicationPath()%>DisplayPage?srv=<%= templateDescriptions.get(matchingTemplates[i].getId()) %>">
@@ -130,7 +130,7 @@
                                                 <ul class="keyword-values unstyled">
                                                     <% for (String attributeValue : matchingTemplates[i].getTemplateAttributeValues(attributeName)) {%>
                                                         <li class="keyword-value">
-                                                            <%= CatalogSearch.replaceAll(combinedPattern, attributeValue)%>
+                                                            <%= attributeValue%>
                                                         </li>
                                                     <% }%>
                                                 </ul>
