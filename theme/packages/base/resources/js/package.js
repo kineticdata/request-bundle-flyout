@@ -1,3 +1,9 @@
+$(function() {
+    // This fix will correct the extra spacing created after the section header
+    // because of the section header css of top -20px
+    $('div.sectionHeader').next().css('margin', '-15px 0 0 0');
+});
+
 // Bundle js function for loading the review request iframe
 // This function is able to determine when the iframe url has finished loading
 function loadIframe(iFrameSelector, loaderSelector) {
