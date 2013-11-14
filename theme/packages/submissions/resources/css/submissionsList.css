@@ -44,14 +44,14 @@ div.console-list ul.console li:after { display: table; content: ""; line-height:
 div.console-list ul.console li:after { clear: both; }
 *:first-child+html div.console-list ul.console li { zoom: 1; } /* IE7 */
 div.console-list ul.console li div.left { float: left; padding: 5px 10px; }
-div.console-list ul.console li div.left:first-child { width: 300px; }
+div.console-list ul.console li div.left:first-child { width: 290px; }
 div.console-list ul.console li div.middle { width: 440px; }
 
 /* Image */
 div.console-list ul.console li div.left div.content-wrap div.image { float: left; margin: 10px 20px 0 0; }
 
 /* Buttons */
-div.console-list ul.console li div.left a.templateButton { margin: 0 0 10px 0; width: 130px; }
+div.console-list ul.console li div.left a.templateButton { margin: 0 0 10px 0; width: 140px; }
 
 /* Labels */
 div.console-list ul.console li div.left div.submitted-label,
