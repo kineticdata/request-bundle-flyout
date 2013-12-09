@@ -35,6 +35,7 @@ java -jar kurl.jar -action=build_catalog -directory=path-to-kurl-catalog-directo
     * Service Item Example with Person Lookup
     * Site Feedback
     * Submissions
+    * Submission Activity
 
 7. In the bundle directory open the your-theme-name/common/config/config.jspf file. Update each line where the word "Flyout" is with the name of your catalog then save the file.
 
