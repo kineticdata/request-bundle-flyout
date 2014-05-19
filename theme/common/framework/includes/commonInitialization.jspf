@@ -1,5 +1,3 @@
-<%@page import="java.net.URLEncoder"%>
-<%@page import="org.json.simple.JSONValue"%>
 <%--
     This file is responsible for initializing the common framework.  It is
     loaded by the core bundleInitialization.jspf file (which is responsible for
