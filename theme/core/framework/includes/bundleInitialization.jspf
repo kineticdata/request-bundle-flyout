@@ -44,6 +44,7 @@
 <%@include file="../helpers/CycleHelper.jspf" %>
 <%@include file="../helpers/DateHelper.jspf" %>
 <%@include file="../helpers/ResponseHelper.jspf" %>
+<%@include file="../helpers/escape_method.jspf" %>
 
 <%-- Include any model files. --%>
 <%@include file="../models/ArsBase.jspf" %>
