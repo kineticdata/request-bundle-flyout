@@ -2,6 +2,7 @@
     public static class Task {
         public static final String FORM_NAME = "KS_TSK_Instance";
         public static final String FIELD_CREATE_DATE = "3";
+        public static final String FIELD_REQUEST_ID = "1";
         public static final String FIELD_ID = "179";
         public static final String FIELD_MODIFIED_DATE = "6";
         public static final String FIELD_NAME = "700000810";
@@ -16,7 +17,7 @@
         public static final String[] FIELD_IDS = new String[] {
             FIELD_CREATE_DATE, FIELD_ID, FIELD_MODIFIED_DATE, FIELD_NAME,
             FIELD_SOURCE_ID, FIELD_STATUS, FIELD_TREE_NAME, FIELD_TOKEN,
-            FIELD_DEF_NAME, FIELD_RESULTS};
+            FIELD_DEF_NAME, FIELD_RESULTS, FIELD_VISIBLE, FIELD_REQUEST_ID};
 
         public static Task[] findBySource(HelperContext context, String source, String sourceId) {
             Task[] results = new Task[0];
@@ -24,6 +25,7 @@
             String qualification =
                 "'"+FIELD_SOURCE+"' = \""+source+"\" AND "+
                 "'"+FIELD_SOURCE_ID+"' = \""+sourceId+"\" AND"+
+                "'"+FIELD_STATUS+"' != \"New\" AND"+ // Exclude tasks that have not completed their actions
                 "'"+FIELD_VISIBLE+"' = \"Yes\"";
 
             SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, new String[] {FIELD_CREATE_DATE}, 0, 0, 1);
@@ -35,6 +37,39 @@
             }
 
             return results;
+        }
+
+        public static Task[] findBySource(HelperContext context, String source, String sourceId, boolean includeSubtreeNodes) {
+            Task[] results = new Task[0];
+            if(includeSubtreeNodes) {
+                String qualification =
+               "'"+FIELD_SOURCE+"' = \""+source+"\" AND "+
+               "'"+FIELD_SOURCE_ID+"' = \""+sourceId+"\" AND"+
+               "'"+FIELD_STATUS+"' != \"New\" AND"+ // Exclude tasks that have not completed their actions
+               "('"+FIELD_VISIBLE+"' = \"Yes\" OR '"+FIELD_DEF_NAME+"' LIKE \"tree_%\")";
+
+               SimpleEntry[] entries = ArsBase.find(context, FORM_NAME, qualification, FIELD_IDS, new String[] {FIELD_CREATE_DATE}, 0, 0, 1);
+               if (entries != null && entries.length > 0) {
+                   results = new Task[entries.length];
+                   for(int i=0;i<results.length;i++) {
+                       results[i] = new Task(entries[i]);
+                   }
+               }
+            } else {
+                results = Task.findBySource(context, source, sourceId);
+            }
+            return results;
+       }
+
+        public static Task findByToken(HelperContext context, String source, String token) {
+            Task result = null;
+            String qualification =
+                "'"+FIELD_SOURCE+"' = \""+source+"\" AND "+
+                "'"+FIELD_TOKEN+"' = \""+token+"\"";
+
+            SimpleEntry entry = ArsBase.findSingle(context, FORM_NAME, qualification, FIELD_IDS);
+            if (entry != null) { result = new Task(entry); }
+            return result;
         }
 
         private TaskMessage[] messages = null;
@@ -67,6 +102,7 @@
         }
 
         public String getCreateDate() {return entry.getEntryFieldValue(FIELD_CREATE_DATE);}
+        public String getRequestId() {return entry.getEntryFieldValue(FIELD_REQUEST_ID);}
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getModifiedDate() {return entry.getEntryFieldValue(FIELD_MODIFIED_DATE);}
         public String getName() {return entry.getEntryFieldValue(FIELD_NAME);}
@@ -76,5 +112,6 @@
         public String getToken() {return entry.getEntryFieldValue(FIELD_TOKEN);}
         public String getDefName() {return entry.getEntryFieldValue(FIELD_DEF_NAME);}
         public String getResults() {return entry.getEntryFieldValue(FIELD_RESULTS);}
+        public String getVisible() {return entry.getEntryFieldValue(FIELD_VISIBLE);}
     }
 %>
