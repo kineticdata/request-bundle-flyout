@@ -117,6 +117,37 @@
             return taskTreeExecutions;
         }
 
+        public List<Task> getAllTasks(HelperContext context) {
+            // Retrieve the associated tasks including any subtrees
+            List<Task> tasks = this.recurseTasks(context, Task.findBySource(context, "Kinetic Request", this.getId(), true));
+            // Sort list of task objects by request id for execution order
+            Collections.sort(tasks, new Comparator<Task>() {
+                public int compare(Task task1, Task task2) {
+                    return task1.getRequestId().compareTo(task2.getRequestId());
+                }
+            });
+            return tasks;
+        }
+
+        public List<Task> recurseTasks(HelperContext context, Task[] tasks) {
+            // A flat list of all the visible tasks including subtree nodes
+            List<Task> allTasks = new ArrayList<Task>();
+            for (Task task : tasks) {
+                // Determine if the token exists and if the node is a subtree
+                // If these conditions are met, start recursion
+                if(StringUtils.isNotBlank(task.getToken()) && task.getDefName().startsWith("tree_")) {
+                    Task[] subTasks = Task.findBySource(context, "Kinetic Request", task.getToken(), true);
+                    // Merge list
+                    allTasks.addAll(this.recurseTasks(context, subTasks));
+                }
+                // Determine if the node is set to visible so subtree nodes are not included
+                if("Yes".equals(task.getVisible().trim())) {
+                    allTasks.add(task);
+                }
+            }
+            return allTasks;
+        }
+
         public Template getTemplate() {return this.template;}
         public String getId() {return entry.getEntryFieldValue(FIELD_ID);}
         public String getTemplateId() {return entry.getEntryFieldValue(FIELD_TEMPLATE_ID);}
