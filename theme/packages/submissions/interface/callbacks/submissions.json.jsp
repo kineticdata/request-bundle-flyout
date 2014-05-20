@@ -22,10 +22,17 @@
         int pageSize = 1000;
         int pageOffset = 0;
         try {
-            // Try to retrieve the pageSize and pageNumber and convert to ints
+            // Try to retrieve the pageSize and convert to ints
             pageSize = Integer.parseInt(request.getParameter("limit"));
+        } catch(NumberFormatException e) {
+            throw new Exception("Unable to parse limit as integer.");
+        }
+        try {
+            // Try to retrieve offset and convert to ints
             pageOffset = Integer.parseInt(request.getParameter("offset"));
-        } catch(NumberFormatException e) {}
+        } catch(NumberFormatException e) {
+            throw new Exception("Unable to parse offset as integer.");
+        }
         // Set order field.  Currently only sorting for one field
         String sortOrderField = SubmissionConsole.getSortFieldId(request.getParameter("orderField"));
         String[] sortFieldIds = new String[]{sortOrderField};
