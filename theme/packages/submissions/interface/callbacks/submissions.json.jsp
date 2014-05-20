@@ -6,6 +6,9 @@
     } else {
         // Retrieve the main catalog object
         Catalog catalog = Catalog.findByName(context, bundle.getProperty("catalogName"));
+	if(catalog == null) {
+		throw new Exception("The catalog specified in your configuration is incorrect.");
+	}
         catalog.preload(context);
 
         /*
