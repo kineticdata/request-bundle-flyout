@@ -6,76 +6,49 @@
     } else {
         // Retrieve the main catalog object
         Catalog catalog = Catalog.findByName(context, bundle.getProperty("catalogName"));
-	if(catalog == null) {
-		throw new Exception("The catalog specified in your configuration is incorrect.");
-	}
+        if(catalog == null) {
+            throw new Exception("The catalog specified in your configuration is incorrect.");
+        }
+        // Preload the catalog
         catalog.preload(context);
-
-        /*
-         * Here we are pulling the parameters for the ars helpers call from the request
-         * object and processing a few of them as necessary.
-         * 
-         * Retrieve the form and qualification parameters.  These are simply passed
-         * as Strings and no further processing is needed.
-         */
+        // Get qualification mapping from config
         String qualification = submissionGroups.get(request.getParameter("qualification"));
         if (qualification == null) {
             throw new Exception("The specified submission qualification ("+
                 request.getParameter("qualification")+") does not match any pre-defined "+
                 "submission qualifications.");
         }
-
-        /*
-         * Retrieve the pageSize and pageNumber parameters.  These need to be converted
-         * from Strings to ints.  Also we must use the pageSize and pageNumber values
-         * to calculate the proper offset.
-         */
-        int pageSize = Integer.parseInt(request.getParameter("limit"));
-        int pageOffset = Integer.parseInt(request.getParameter("offset"));
-
-        /*
-         * orderField.  Currently only sorting for one field
-         */
+        // Set size and offset
+        int pageSize = 1000;
+        int pageOffset = 0;
+        try {
+            // Try to retrieve the pageSize and pageNumber and convert to ints
+            pageSize = Integer.parseInt(request.getParameter("limit"));
+            pageOffset = Integer.parseInt(request.getParameter("offset"));
+        } catch(NumberFormatException e) {}
+        // Set order field.  Currently only sorting for one field
         String sortOrderField = SubmissionConsole.getSortFieldId(request.getParameter("orderField"));
         String[] sortFieldIds = new String[]{sortOrderField};
-       
-        /*
-         * Retrieve the sortOrder parameter.  This is passed as either "ascending" or
-         * "descending".  Ars helpers expects a value of 1 for ascending sort order
-         * and a value of 2 for a descending sort order.
-         */
+        // Retrieve the sortOrder parameter to determine integer value of sort order
+        // 1 is ascending order and 2 is descending order
         int sortOrder = request.getParameter("order").equals("DESC") ? 2 : 1;
-
-        /*
-         * Here we are preparing to make the ars helpers call.
-         * 
-         * Here we verify that the context variable is not null, otherwise we cannot
-         * continue with this operation
-         */
-        if (context == null) {
-            throw new IllegalArgumentException("The \"context\" argument can't be null.");
-        }
-
-        /*
-         * Retrieve the entries with the parameters gathered above.  Also retrieve a
-         * count of the total number of entries that match the qualification.
-         */
+        // Retrieve the entries with the parameters gathered above
         SubmissionConsole[] submissions = SubmissionConsole.find(context, catalog, qualification, sortFieldIds, pageSize, pageOffset, sortOrder);
+        // Retrieve count of the total number of entries that match the qualification.
         int count = ArsBase.count(context, SubmissionConsole.FORM_NAME, qualification);
-
-        out.println("{");
-        out.println("\"count\" : " + count + ",");
-        out.println("\"limit\" : " + pageSize + ",");
-        out.println("\"offset\" : " + pageOffset + ",");
-        out.println("\"data\" : [");
+        // Build result map
+        Map<String,Object> results = new LinkedHashMap<String,Object>();
+        results.put("count", count);
+        results.put("limit", pageSize);
+        results.put("offset", pageOffset);
+        // Build submission array
+        List<SubmissionConsole> submissionData = new LinkedList<SubmissionConsole>();
         for (int i = 0; i < submissions.length; i++) {
-            if (i != 0) {
-                out.println(",");
-            }
-            // Output json results
-            out.print(submissions[i].toJson());
+            submissionData.add(submissions[i]);
         }
-        out.println("]");
-        out.println("}");
+        // Add submission array to data
+        results.put("data", submissionData);
+        // Output json string
+        out.print(JSONValue.toJSONString(results));
     }
 %>
